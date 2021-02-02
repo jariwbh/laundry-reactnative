@@ -27,15 +27,15 @@ export default NavigationsApp = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator headerMode='none' initialRouteName='LoginScreen'>
-                {authUser == false ?
-                    <>
-                        <Stack.Screen name="LoginScreen" component={LoginScreen} />
-                        <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-                        <Stack.Screen name="VerificatioScreen" component={VerificatioScreen} />
-                    </>
-                    :
-                    <Stack.Screen name="TabNavigation" component={TabNavigation} />
-                }
+                {/* {authUser == false ?
+                    <> */}
+                <Stack.Screen name="LoginScreen" component={LoginScreen} />
+                <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+                <Stack.Screen name="VerificatioScreen" component={VerificatioScreen} />
+                {/* </>
+                    : */}
+                <Stack.Screen name="TabNavigation" component={TabNavigation} />
+                {/* } */}
             </Stack.Navigator>
         </NavigationContainer>
     );

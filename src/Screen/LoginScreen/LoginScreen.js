@@ -1,11 +1,90 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, TextInput, SafeAreaView } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import AsyncStorage from '@react-native-community/async-storage';
+import Loader from '../../Components/Loader/Loading'
+import appConfig from '../../Helpers/appConfig'
+import { LoginService } from "../../Services/LoginService/LoginService"
 
 export default class RegisterScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            username: null,
+            usererror: null,
+            password: null,
+            passworderror: null,
+            loading: false,
+        };
+        this.setEmail = this.setEmail.bind(this);
+        this.setPassword = this.setPassword.bind(this);
+        this.onPressSubmit = this.onPressSubmit.bind(this);
+        this.secondTextInputRef = React.createRef();
+    }
+
+    setEmail(email) {
+        if (!email || email <= 0) {
+            return this.setState({ usererror: 'User Name cannot be empty' })
+        }
+        return this.setState({ username: email, usererror: null })
+    }
+
+    setPassword(password) {
+        if (!password || password.length <= 0) {
+            return this.setState({ passworderror: 'Password cannot be empty' });
+        }
+        return this.setState({ password: password, passworderror: null })
+    }
+
+    resetScreen() {
+        this.setState({
+            username: null,
+            usererror: null,
+            password: null,
+            passworderror: null,
+            loading: false,
+        })
+    }
+
+    authenticateUser = (user) => (
+        AsyncStorage.setItem('@authuser', JSON.stringify(user))
+    )
+
+    onPressSubmit = async () => {
+        const { username, password } = this.state;
+        if (!username || !password) {
+            this.setEmail(username)
+            this.setPassword(password)
+            return;
+        }
+        const body = {
+            username: username,
+            password: password
+        }
+        this.setState({ loading: true })
+        try {
+            await LoginService(body)
+                .then(response => {
+                    if (response.error) {
+                        this.setState({ loading: false })
+                        ToastAndroid.show("Username and Password Invalid!", ToastAndroid.LONG);
+                        this.resetScreen()
+                        return
+                    }
+
+                    if (response != null || response != 'undefind') {
+                        this.authenticateUser(response.user)
+                        appConfig.headers["authkey"] = response.user.addedby;
+                        ToastAndroid.show("SignIn Success!", ToastAndroid.LONG);
+                        this.props.navigation.navigate('TabNavigation')
+                        this.resetScreen()
+                        return
+                    }
+                })
+        }
+        catch (error) {
+            this.setState({ loading: false })
+            ToastAndroid.show("Username and Password Invalid!", ToastAndroid.LONG)
         };
     }
 
@@ -28,41 +107,41 @@ export default class RegisterScreen extends Component {
                             <TextInput
                                 style={styles.TextInput}
                                 placeholder="Email"
-                                //   defaultValue={this.state.username}
+                                defaultValue={this.state.username}
                                 type='clear'
                                 returnKeyType="next"
                                 placeholderTextColor="#193628"
                                 blurOnSubmit={false}
-                            // onSubmitEditing={() => { this.secondTextInputRef.current.focus() }}
-                            //  onChangeText={(email) => this.setEmail(email)}
+                                onSubmitEditing={() => { this.secondTextInputRef.current.focus() }}
+                                onChangeText={(email) => this.setEmail(email)}
                             />
                         </View>
-                        {/* <Text style={{ marginTop: hp('-3%'), marginLeft: hp('0%'), color: '#ff0000' }}>{this.state.usererror && this.state.usererror}</Text> */}
+                        <Text style={{ marginTop: hp('-3%'), marginLeft: hp('0%'), color: '#ff0000' }}>{this.state.usererror && this.state.usererror}</Text>
                         <View style={styles.inputView}>
                             <TextInput
                                 style={styles.TextInput}
                                 placeholder="**********"
                                 type='clear'
-                                //  defaultValue={this.state.password}
+                                defaultValue={this.state.password}
                                 placeholderTextColor="#193628"
                                 secureTextEntry={true}
                                 returnKeyType="done"
                                 keyboardType="number-pad"
                                 ref={this.secondTextInputRef}
-                            //  onSubmitEditing={() => this.onPressSubmit()}
-                            //  onChangeText={(password) => this.setPassword(password)}
+                                onSubmitEditing={() => this.onPressSubmit()}
+                                onChangeText={(password) => this.setPassword(password)}
                             />
                         </View>
-                        {/* <Text style={{ marginTop: hp('-3%'), marginLeft: hp('0%'), color: '#ff0000' }}>{this.state.passworderror && this.state.passworderror}</Text> */}
+                        <Text style={{ marginTop: hp('-3%'), marginLeft: hp('0%'), color: '#ff0000' }}>{this.state.passworderror && this.state.passworderror}</Text>
                     </View>
-                    <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end', marginRight: hp('4%') }}>
+                    {/* <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end', marginRight: hp('4%') }}>
                         <TouchableOpacity onPress={() => { }} >
                             <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Forgot Password ?</Text>
                         </TouchableOpacity>
-                    </View>
+                    </View> */}
                     <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('2%') }}>
-                        <TouchableOpacity style={styles.loginBtn} onPress={() => { }} >
-                            <Text style={styles.loginText}>LOGIN</Text>
+                        <TouchableOpacity style={styles.loginBtn} onPress={() => { this.onPressSubmit() }} >
+                            {this.state.loading == true ? <Loader /> : <Text style={styles.loginText}>LOGIN</Text>}
                         </TouchableOpacity>
                     </View>
                     <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('7%') }}>

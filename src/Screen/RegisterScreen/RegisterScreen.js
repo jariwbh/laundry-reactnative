@@ -1,13 +1,110 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, TextInput, SafeAreaView } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { RegisterService } from '../../Services/RegisterService/RegisterService';
+import Loader from '../../Components/Loader/Loading';
+import BackButton from '../../Components/BackButton/BackButton'
 
 export default class RegisterScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-        };
+            fullname: null,
+            fullnameError: null,
+            username: null,
+            usernameError: null,
+            mobilenumber: null,
+            mobilenumberError: null,
+            address: null,
+            addressError: null,
+            loading: false,
+        }
+        this.setFullName = this.setFullName.bind(this);
+        this.setUserName = this.setUserName.bind(this);
+        this.setMobileNumber = this.setMobileNumber.bind(this);
+        this.setAddress = this.setAddress.bind(this);
+        this.onPressSubmit = this.onPressSubmit.bind(this);
+        this.secondTextInputRef = React.createRef();
+        this.TeardTextInputRef = React.createRef();
+        this.FourTextInputRef = React.createRef();
+    }
+
+    setFullName(fullname) {
+        if (!fullname || fullname.length <= 0) {
+            return this.setState({ fullnameError: 'User Name cannot be empty' });
+        }
+        return this.setState({ fullname: fullname, fullnameError: null })
+    }
+
+    setUserName(email) {
+        const re = /\S+@\S+\.\S+/;
+        if (!email || email.length <= 0) {
+            return this.setState({ usernameError: 'Email Id can not be empty' });
+        }
+        if (!re.test(email)) {
+
+            return this.setState({ usernameError: 'Ooops! We need a valid email address' });
+        }
+        return this.setState({ username: email, usernameError: null })
+    }
+
+    setMobileNumber(mobilenumber) {
+        const reg = /^[0]?[789]\d{9}$/;
+        if (!mobilenumber || mobilenumber.length <= 0) {
+            return this.setState({ mobilenumberError: 'Mobile Number cannot be empty' });
+        }
+        if (!reg.test(mobilenumber)) {
+            return this.setState({ mobilenumberError: 'Ooops! We need a valid Mobile Number' });
+        }
+        return this.setState({ mobilenumber: mobilenumber, mobilenumberError: null })
+    }
+
+    setAddress(address) {
+        if (!address || address.length <= 0) {
+            return this.setState({ addressError: 'Address cannot be empty' });
+        }
+        return this.setState({ address: address, addressError: null })
+    }
+
+    onPressSubmit = async () => {
+        const { fullname, username, mobilenumber, address } = this.state;
+        if (!fullname || !username || !mobilenumber) {
+            this.setFullName(fullname)
+            this.setUserName(username)
+            this.setMobileNumber(mobilenumber)
+            this.setAddress(address)
+            return;
+        }
+        const body = {
+            property: {
+                fullname: fullname,
+                email: username,
+                mobile_number: mobilenumber,
+                address: address
+            }
+        }
+
+        this.setState({ loading: true })
+
+        try {
+            await RegisterService(body).then(response => {
+                if (response.error) {
+                    this.setState({ loading: false })
+                    ToastAndroid.show("SignUp Failed!", ToastAndroid.LONG);
+                    this.resetScreen()
+                    return
+                }
+                if (response != null) {
+                    ToastAndroid.show("SignUp Success!", ToastAndroid.LONG);
+                    this.props.navigation.navigate('LoginScreen')
+                    this.resetScreen()
+                }
+            })
+        }
+        catch (error) {
+            this.setState({ loading: false })
+            ToastAndroid.show("SignUp Failed!", ToastAndroid.LONG)
+        }
     }
 
     render() {
@@ -25,61 +122,67 @@ export default class RegisterScreen extends Component {
                         <View style={styles.inputView}>
                             <TextInput
                                 style={styles.TextInput}
-                                placeholder="Name"
-                                //   defaultValue={this.state.username}
+                                placeholder="Full Name"
+                                defaultValue={this.state.fullname}
                                 type='clear'
                                 returnKeyType="next"
                                 placeholderTextColor="#193628"
                                 blurOnSubmit={false}
-                            // onSubmitEditing={() => { this.secondTextInputRef.current.focus() }}
-                            //  onChangeText={(email) => this.setEmail(email)}
+                                onSubmitEditing={() => { this.secondTextInputRef.current.focus() }}
+                                onChangeText={(fullname) => this.setFullName(fullname)}
                             />
                         </View>
-                        {/* <Text style={{ marginTop: hp('-3%'), marginLeft: hp('0%'), color: '#ff0000' }}>{this.state.usererror && this.state.usererror}</Text> */}
+                        <Text style={{ marginTop: hp('-3%'), marginLeft: hp('0%'), color: '#ff0000' }}>{this.state.fullnameError && this.state.fullnameError}</Text>
+                        <View style={styles.inputview}>
+                            <TextInput
+                                style={styles.TextInput}
+                                defaultValue={this.state.username}
+                                placeholder="Email"
+                                type='clear'
+                                placeholderTextColor="#ABAFB3"
+                                returnKeyType="next"
+                                autoCapitalize="none"
+                                autoCompleteType="email"
+                                textContentType="emailAddress"
+                                keyboardType="email-address"
+                                blurOnSubmit={false}
+                                onSubmitEditing={() => { this.TeardTextInputRef.current.focus() }}
+                                ref={this.secondTextInputRef}
+                                onChangeText={(username) => this.setUserName(username)}
+                            />
+                        </View>
+                        <Text style={{ marginTop: hp('-2%'), marginLeft: hp('-20%'), color: '#ff0000' }}>{this.state.usernameError && this.state.usernameError}</Text>
                         <View style={styles.inputView}>
                             <TextInput
                                 style={styles.TextInput}
                                 placeholder="Address"
                                 type='clear'
-                                //  defaultValue={this.state.password}
+                                defaultValue={this.state.address}
                                 placeholderTextColor="#193628"
-                                returnKeyType="done"
-                                ref={this.secondTextInputRef}
-                            //  onSubmitEditing={() => this.onPressSubmit()}
-                            //  onChangeText={(password) => this.setPassword(password)}
+                                returnKeyType="next"
+                                onSubmitEditing={() => { this.FourTextInputRef.current.focus() }}
+                                ref={this.TeardTextInputRef}
+                                onChangeText={(address) => this.setAddress(address)}
                             />
                         </View>
-                        <View style={styles.inputView}>
+                        <Text style={{ marginTop: hp('-2%'), marginLeft: hp('-20%'), color: '#ff0000' }}>{this.state.addressError && this.state.addressError}</Text>
+                        <View style={styles.inputview} >
                             <TextInput
                                 style={styles.TextInput}
-                                placeholder="Phone Number"
+                                placeholder="Mobile Number"
                                 type='clear'
-                                //  defaultValue={this.state.password}
-                                placeholderTextColor="#193628"
+                                placeholderTextColor="#ABAFB3"
                                 returnKeyType="done"
                                 keyboardType="number-pad"
-                                ref={this.secondTextInputRef}
-                            //  onSubmitEditing={() => this.onPressSubmit()}
-                            //  onChangeText={(password) => this.setPassword(password)}
+                                ref={this.FourTextInputRef}
+                                onSubmitEditing={() => this.onPressSubmit()}
+                                onChangeText={(mobilenumber) => this.setMobileNumber(mobilenumber)}
                             />
                         </View>
-                        {/* <Text style={{ marginTop: hp('-3%'), marginLeft: hp('0%'), color: '#ff0000' }}>{this.state.passworderror && this.state.passworderror}</Text> */}
-                        <View style={styles.inputView}>
-                            <TextInput
-                                style={styles.TextInput}
-                                placeholder="Email"
-                                type='clear'
-                                //  defaultValue={this.state.password}
-                                placeholderTextColor="#193628"
-                                returnKeyType="done"
-                                ref={this.secondTextInputRef}
-                            //  onSubmitEditing={() => this.onPressSubmit()}
-                            //  onChangeText={(password) => this.setPassword(password)}
-                            />
-                        </View>
+                        <Text style={{ marginTop: hp('-2%'), marginLeft: hp('-16%'), color: '#ff0000' }}>{this.state.mobilenumberError && this.state.mobilenumberError}</Text>
                     </View>
                     <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('2%') }}>
-                        <TouchableOpacity style={styles.signupBtn} onPress={() => { this.props.navigation.navigate('VerificatioScreen') }} >
+                        <TouchableOpacity style={styles.signupBtn} onPress={() => { this.onPressSubmit() }} >
                             <Text style={styles.signupText}>Signup</Text>
                         </TouchableOpacity>
                     </View>
