@@ -4,56 +4,8 @@ const CategoryService = () => {
     const body =
     {
         "search": [{
-            "searchfield": "formid",
-            "searchvalue": "5e426741d466f1115c2e7d50",
-            "criteria": "eq",
-            "datatype": "ObjectId"
-        },
-        { "searchfield": "status", "searchvalue": "active", "criteria": "eq" }
-        ], "formname": "poscategory"
-    }
-
-    const requestOptions = {
-        method: 'POST',
-        headers: appConfig.headers,
-        body: JSON.stringify(body)
-    };
-
-    return fetch(appConfig.baseUrl + 'formdatas/filter', requestOptions)
-        .then(response => response.json())
-        .catch(error => {
-            console.error('There was an error!', error);
-        });
-}
-
-const AppointmentListService = () => {
-    const body =
-    {
-        "search": [{
-            "searchfield": "status",
-            "searchvalue": "active",
-            "criteria": "eq",
-            "datatype": "text"
-        }, { "searchfield": "addedby", "searchvalue": "5ff6957fb638dd6a777f049c", "criteria": "eq" }]
-    }
-    const requestOptions = {
-        method: 'POST',
-        headers: appConfig.headers,
-        body: JSON.stringify(body)
-    };
-
-    return fetch(appConfig.baseUrl + 'services/filter', requestOptions)
-        .then(response => response.json()).catch(error => {
-            console.error('There was an error!', error);
-        });
-}
-
-const CategoryByAppointmentService = (id) => {
-    const body =
-    {
-        "search": [{
             "searchfield": "category",
-            "searchvalue": id,
+            "searchvalue": "6014ed9fd7ebfa6ec230aab5",
             "criteria": "eq",
             "datatype": "ObjectId"
         },
@@ -72,4 +24,4 @@ const CategoryByAppointmentService = (id) => {
         });
 }
 
-export { CategoryService, AppointmentListService, CategoryByAppointmentService };
+export { CategoryService };

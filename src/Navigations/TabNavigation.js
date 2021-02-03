@@ -36,7 +36,7 @@ function HomeStackScreen() {
     );
 }
 
-const AppStack = createStackNavigator();
+//const AppStack = createStackNavigator();
 // function AppStackScreen({ navigation }) {
 //     return (
 //         <AppStack.Navigator initialRouteName="Staff" headerMode='screen' >
@@ -108,6 +108,7 @@ export default function TabNavigation() {
                 inactiveTintColor: '#808B96',
                 keyboardHidesTabBar: true,
                 backBehavior: "history",
+                showLabel: false
             }}
         >
             <Tab.Screen name="Home" component={HomeStackScreen} />

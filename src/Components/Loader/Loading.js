@@ -12,7 +12,7 @@ const Loading = () => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
-                <ActivityIndicator color='#FFFFFF' size="large" />
+                <ActivityIndicator color='#00C464' size="small" />
             </View>
         </SafeAreaView>
     );

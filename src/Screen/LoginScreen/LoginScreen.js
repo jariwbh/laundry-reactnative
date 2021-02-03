@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, TextInput, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, TextInput, SafeAreaView, ToastAndroid, ScrollView, StatusBar } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import AsyncStorage from '@react-native-community/async-storage';
 import Loader from '../../Components/Loader/Loading'
@@ -10,9 +10,9 @@ export default class RegisterScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: null,
+            username: 'LAUND-34011',
             usererror: null,
-            password: null,
+            password: 'LAUND-34011',
             passworderror: null,
             loading: false,
         };
@@ -23,8 +23,9 @@ export default class RegisterScreen extends Component {
     }
 
     setEmail(email) {
-        if (!email || email <= 0) {
-            return this.setState({ usererror: 'User Name cannot be empty' })
+        const re = /\S+@\S+\.\S+/;
+        if (!email || email.length <= 0) {
+            return this.setState({ usererror: 'Email Id can not be empty', username: null });
         }
         return this.setState({ username: email, usererror: null })
     }
@@ -47,7 +48,7 @@ export default class RegisterScreen extends Component {
     }
 
     authenticateUser = (user) => (
-        AsyncStorage.setItem('@authuser', JSON.stringify(user))
+        AsyncStorage.setItem('@authuserlaundry', JSON.stringify(user))
     )
 
     onPressSubmit = async () => {
@@ -63,6 +64,7 @@ export default class RegisterScreen extends Component {
         }
         this.setState({ loading: true })
         try {
+            console.log('body', body);
             await LoginService(body)
                 .then(response => {
                     if (response.error) {
@@ -89,8 +91,10 @@ export default class RegisterScreen extends Component {
     }
 
     render() {
+        const { usererror, passworderror } = this.state;
         return (
             <SafeAreaView style={styles.container}>
+                <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
                 <ImageBackground source={require('../../assets/Image/Login.png')} style={styles.backgroundImage}>
                     <View style={{ marginTop: hp('5%'), marginLeft: hp('2%') }}>
                         <Image source={require('../../assets/Image/Logo.png')} style={{ height: hp('7%'), width: wp('40%'), borderRadius: hp('1%'), }}
@@ -102,58 +106,58 @@ export default class RegisterScreen extends Component {
                     <View style={{ marginTop: hp('1%'), marginLeft: hp('3%'), marginRight: hp('10%') }}>
                         <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Donec sed odio dui. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</Text>
                     </View>
-                    <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('2%') }}>
-                        <View style={styles.inputView}>
-                            <TextInput
-                                style={styles.TextInput}
-                                placeholder="Email"
-                                defaultValue={this.state.username}
-                                type='clear'
-                                returnKeyType="next"
-                                placeholderTextColor="#193628"
-                                blurOnSubmit={false}
-                                onSubmitEditing={() => { this.secondTextInputRef.current.focus() }}
-                                onChangeText={(email) => this.setEmail(email)}
-                            />
+                    <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={'always'}>
+                        <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('2%') }}>
+                            <View style={styles.inputView}>
+                                <TextInput
+                                    style={usererror == null ? styles.TextInput : styles.TextInputError}
+                                    placeholder="Username"
+                                    defaultValue={this.state.username}
+                                    type='clear'
+                                    returnKeyType="next"
+                                    placeholderTextColor="#193628"
+                                    blurOnSubmit={false}
+                                    onSubmitEditing={() => { this.secondTextInputRef.current.focus() }}
+                                    onChangeText={(email) => this.setEmail(email)}
+                                />
+                            </View>
+                            <View style={styles.inputView}>
+                                <TextInput
+                                    style={passworderror == null ? styles.TextInput : styles.TextInputError}
+                                    placeholder="Password"
+                                    type='clear'
+                                    defaultValue={this.state.password}
+                                    placeholderTextColor="#193628"
+                                    secureTextEntry={true}
+                                    returnKeyType="done"
+                                    keyboardType="number-pad"
+                                    ref={this.secondTextInputRef}
+                                    onSubmitEditing={() => this.onPressSubmit()}
+                                    onChangeText={(password) => this.setPassword(password)}
+                                />
+                            </View>
                         </View>
-                        <Text style={{ marginTop: hp('-3%'), marginLeft: hp('0%'), color: '#ff0000' }}>{this.state.usererror && this.state.usererror}</Text>
-                        <View style={styles.inputView}>
-                            <TextInput
-                                style={styles.TextInput}
-                                placeholder="**********"
-                                type='clear'
-                                defaultValue={this.state.password}
-                                placeholderTextColor="#193628"
-                                secureTextEntry={true}
-                                returnKeyType="done"
-                                keyboardType="number-pad"
-                                ref={this.secondTextInputRef}
-                                onSubmitEditing={() => this.onPressSubmit()}
-                                onChangeText={(password) => this.setPassword(password)}
-                            />
-                        </View>
-                        <Text style={{ marginTop: hp('-3%'), marginLeft: hp('0%'), color: '#ff0000' }}>{this.state.passworderror && this.state.passworderror}</Text>
-                    </View>
-                    {/* <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end', marginRight: hp('4%') }}>
+                        {/* <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end', marginRight: hp('4%') }}>
                         <TouchableOpacity onPress={() => { }} >
                             <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Forgot Password ?</Text>
                         </TouchableOpacity>
                     </View> */}
-                    <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('2%') }}>
-                        <TouchableOpacity style={styles.loginBtn} onPress={() => { this.onPressSubmit() }} >
-                            {this.state.loading == true ? <Loader /> : <Text style={styles.loginText}>LOGIN</Text>}
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('7%') }}>
-                        <TouchableOpacity onPress={() => { }} >
-                            <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Need an account ?</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('1%') }}>
-                        <TouchableOpacity style={styles.signup} onPress={() => { this.props.navigation.navigate('RegisterScreen') }}>
-                            <Text style={styles.signupText}>Signup</Text>
-                        </TouchableOpacity>
-                    </View>
+                        <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('2%') }}>
+                            <TouchableOpacity style={styles.loginBtn} onPress={() => { this.onPressSubmit() }} >
+                                {this.state.loading == true ? <Loader /> : <Text style={styles.loginText}>LOGIN</Text>}
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('7%') }}>
+                            <TouchableOpacity onPress={() => { }} >
+                                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Need an account ?</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('1%') }}>
+                            <TouchableOpacity style={styles.signup} onPress={() => { this.props.navigation.navigate('RegisterScreen'), this.resetScreen() }}>
+                                <Text style={styles.signupText}>Signup</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </ScrollView>
                 </ImageBackground>
             </SafeAreaView>
         );
@@ -167,13 +171,13 @@ const styles = StyleSheet.create({
     backgroundImage: {
         flex: 1,
         resizeMode: 'cover',
-        height: hp('100%'),
-        width: wp('100%')
+        // height: hp('100%'),
+        // width: wp('100%')
     },
     inputView: {
         flexDirection: 'row',
         backgroundColor: "#F4F4F4",
-        borderRadius: wp('2%'),
+        //borderRadius: wp('2%'),
         shadowOpacity: 0.5,
         shadowRadius: 3,
         shadowOffset: {
@@ -191,6 +195,13 @@ const styles = StyleSheet.create({
         fontSize: hp('2%'),
         flex: 1,
         padding: hp('2%'),
+        backgroundColor: '#F4F4F4'
+    },
+    TextInputError: {
+        fontSize: hp('2%'),
+        flex: 1,
+        padding: hp('2%'),
+        backgroundColor: '#ffcccc'
     },
     loginBtn: {
         flexDirection: 'row',

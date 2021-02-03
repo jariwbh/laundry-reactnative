@@ -1,13 +1,53 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity, ToastAndroid } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import Entypo from 'react-native-vector-icons/Entypo';
+import Loader from '../../Components/Loader/Loader';
+import AsyncStorage from '@react-native-community/async-storage'
 
 export default class MyProfileScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-        };
+            userDetails: null,
+            userProfile: null,
+        }
+    }
+
+    wait = (timeout) => {
+        return new Promise(resolve => {
+            setTimeout(resolve, timeout);
+        });
+    }
+
+    componentDidMount() {
+        this.getdata()
+    }
+
+    getdata = async () => {
+        var getUser = await AsyncStorage.getItem('@authuserlaundry')
+        if (getUser == null) {
+            setTimeout(() => {
+                this.props.navigation.replace('LoginScreen')
+            }, 5000);
+        } else {
+            var userData;
+            userData = JSON.parse(getUser)
+            this.wait(1000).then(() => this.setState({ loader: false, userDetails: userData, userProfile: userData.profilepic }));
+        }
+    }
+
+    onPressUpdateProfile() {
+        const { userDetails } = this.state;
+        if (userDetails != null) {
+            this.props.navigation.navigate('UpdateProfileScreen', { userDetails })
+        }
+    }
+
+    onPressLogout() {
+        AsyncStorage.removeItem('@authuserlaundry');
+        ToastAndroid.show("Log Out Success!", ToastAndroid.SHORT),
+            this.props.navigation.replace('LoginScreen')
     }
 
     render() {
@@ -23,7 +63,7 @@ export default class MyProfileScreen extends Component {
                             <View>
                                 <Text style={{ fontSize: hp('2.5%'), marginRight: hp('0%') }} >Phillip Mathis </Text>
                             </View>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('UpdateProfileScreen')}>
+                            <TouchableOpacity onPress={() => this.onPressUpdateProfile()}>
                                 <Text style={{ fontSize: hp('2.5%'), marginRight: hp('0%'), color: '#00C464' }}>View Profile </Text>
                             </TouchableOpacity>
                         </View>
@@ -66,7 +106,7 @@ export default class MyProfileScreen extends Component {
                         <View style={{ alignItems: 'center', marginTop: hp('2%'), flexDirection: 'row' }}>
                             <View style={{ flex: 1, height: 1, backgroundColor: '#e6e6e6' }} />
                         </View>
-                        <TouchableOpacity style={{ marginTop: hp('2%'), flexDirection: 'row', justifyContent: 'space-between', marginLeft: hp('3%') }} onPress={() => this.props.navigation.navigate('LoginScreen')}>
+                        <TouchableOpacity style={{ marginTop: hp('2%'), flexDirection: 'row', justifyContent: 'space-between', marginLeft: hp('3%') }} onPress={() => this.onPressLogout()}>
                             <Text style={{ fontSize: hp('2%'), color: 'red' }}>Signout</Text>
                         </TouchableOpacity>
                         <View style={{ alignItems: 'center', marginTop: hp('2%'), flexDirection: 'row' }}>
