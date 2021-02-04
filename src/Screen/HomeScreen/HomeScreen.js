@@ -83,16 +83,6 @@ export default class HomeScreen extends Component {
                 <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
                 {serviceList == null || serviceList.length == 0 ? <Loader /> :
                     <>
-                        <View style={{ marginTop: hp('5%'), flexDirection: 'row', justifyContent: 'space-between', marginLeft: hp('2%'), marginRight: hp('2%') }}>
-                            <View>
-                                <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={{}} >
-                                    <MaterialIcons name="arrow-back" size={24} color="#000000" />
-                                </TouchableOpacity>
-                            </View>
-                            <Text style={{ fontSize: hp('3.5%'), fontWeight: 'bold' }}>Our Services</Text>
-                            <Entypo name="bell" size={30} color='#000000' style={{}} />
-                        </View>
-
                         <ScrollView refreshControl={<RefreshControl refreshing={refreshing} tintColor="green"
                             title="Pull to refresh" tintColor="#00C464" titleColor="#00C464" colors={["#00C464"]} onRefresh={this.onRefresh} />}
                             showsVerticalScrollIndicator={false}>

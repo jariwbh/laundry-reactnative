@@ -7,6 +7,7 @@ import Loader from '../../Components/Loader/Loading';
 import moment from 'moment';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AsyncStorage from '@react-native-community/async-storage';
+import { BookService } from '../../Services/BookService/BookService';
 
 export default class BookScreen extends Component {
     constructor(props) {
@@ -25,12 +26,15 @@ export default class BookScreen extends Component {
             isDatePickerVisible: false,
             isTimePickerVisibility: false,
             loading: false,
-            userQuentityError: false,
-            userQuentity: false
+            userQuentityError: null,
+            userQuentity: null
         };
         this.setServiceDate = this.setServiceDate.bind(this);
         this.setServiceTime = this.setServiceTime.bind(this);
+        this.setAddress = this.setAddress.bind(this);
+        this.setQuentity = this.setQuentity.bind(this);
         this.onPressSubmit = this.onPressSubmit.bind(this);
+        this.secondTextInputRef = React.createRef();
     }
 
     showDatePicker = () => {
@@ -109,7 +113,7 @@ export default class BookScreen extends Component {
 
     onPressSubmit = () => {
         const { serviceDate, serviceTime, userID, memberID, userAddress, userQuentity } = this.state;
-        if (!serviceDate || !serviceTime) {
+        if (!serviceDate || !serviceTime || !userAddress || !userQuentity) {
             this.setServiceDate(serviceDate)
             this.setServiceTime(serviceTime)
             this.setAddress(userAddress)
@@ -136,76 +140,107 @@ export default class BookScreen extends Component {
         this.setState({ loading: true });
 
         try {
-            console.log('body', body)
-            // BookService(body).then(response => {
-            //     if (response != null) {
-            //         this.setState({ loading: false });
-            //         ToastAndroid.show("Booking Sucess!", ToastAndroid.LONG);
-            //         this.props.navigation.navigate('BookHistory', { response })
-            //     }
-            // })
+            BookService(body).then(response => {
+                if (response != null) {
+                    this.setState({ loading: false });
+                    ToastAndroid.show("Booking Sucess!", ToastAndroid.LONG);
+                    this.props.navigation.navigate('BookConfirmScreen', { response })
+                }
+            })
         }
         catch (error) {
             this.setState({ loading: false })
+            console.log('error', error)
             ToastAndroid.show("Booking Failed!", ToastAndroid.LONG)
         }
     }
 
     render() {
-        const { userAddressError, userQuentityError, serviceTimeError, serviceDateError } = this.state;
+
+        const { userAddressError, userQuentityError, serviceTimeError, serviceDateError, serviceDate, serviceTime, userAddress, userQuentity, loading } = this.state;
         return (
             <SafeAreaView style={styles.container}>
-                <View style={{ marginTop: hp('5%'), flexDirection: 'row', justifyContent: 'space-between', marginLeft: hp('2%'), marginRight: hp('2%') }}>
-                    <View>
-                        <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={{}} >
-                            <MaterialIcons name="arrow-back" size={24} color="#000000" />
-                        </TouchableOpacity>
-                    </View>
-                    <Text style={{ fontSize: hp('3.5%'), fontWeight: 'bold' }}>Washing</Text>
-                    <Entypo name="bell" size={30} color='#000000' style={{}} />
-                </View>
                 <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={'always'}>
-                    <View style={{ marginTop: hp('5%'), justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{ marginTop: hp('1%'), justifyContent: 'center', alignItems: 'center' }}>
                         <View style={styles.inputview}>
-                            <View style={{ height: hp('3.5%'), width: hp('10%'), backgroundColor: '#00C464', marginLeft: hp('3%'), position: 'absolute', marginTop: hp('-2%') }}>
+                            <View style={{ height: hp('3.5%'), width: hp('10%'), backgroundColor: '#00C464', marginLeft: hp('3%'), marginTop: hp('-3.5%') }}>
                                 <Text style={{ color: '#FFFFFF', fontSize: hp('2.5%'), textAlign: 'center' }}>Date</Text>
                             </View>
                             <TextInput
                                 style={serviceDateError == null ? styles.TextInput : styles.TextInputError}
-                                placeholder="Select Date"
+                                defaultValue={serviceDate}
+                                placeholder="YYYY-MM-DD"
+                                placeholderTextColor="#737373"
+                                type='clear'
+                                returnKeyType="next"
+                                onTouchStart={this.showDatePicker}
+                                onChangeText={(serviceDate) => this.setServiceDate(serviceDate)}
+                            />
+                            <DateTimePickerModal
+                                isVisible={this.state.isDatePickerVisible}
+                                mode="date"
+                                onConfirm={this.handleConfirmDate}
+                                onCancel={this.hideDatePicker}
                             />
                         </View>
                         <View style={styles.inputview}>
-                            <View style={{ height: hp('3.5%'), width: hp('10%'), backgroundColor: '#00C464', marginLeft: hp('3%'), position: 'absolute', marginTop: hp('-2%') }}>
+                            <View style={{ height: hp('3.5%'), width: hp('10%'), backgroundColor: '#00C464', marginLeft: hp('3%'), marginTop: hp('-3.5%') }}>
                                 <Text style={{ color: '#FFFFFF', fontSize: hp('2.5%'), textAlign: 'center' }}>Time</Text>
                             </View>
                             <TextInput
                                 style={serviceTimeError == null ? styles.TextInput : styles.TextInputError}
-                                placeholder="Select Time"
+                                defaultValue={serviceTime}
+                                placeholder="HH-MM"
+                                type='clear'
+                                placeholderTextColor="#737373"
+                                returnKeyType="next"
+                                onTouchStart={this.showTimePicker}
+                                onChangeText={(serviceTime) => this.setServiceTime(serviceTime)}
+                            />
+                            <DateTimePickerModal
+                                isVisible={this.state.isTimePickerVisibility}
+                                mode="time"
+                                onConfirm={this.handleConfirmTime}
+                                onCancel={this.hideTimePicker}
                             />
                         </View>
                         <View style={styles.inputview}>
-                            <View style={{ height: hp('3.5%'), width: hp('10%'), backgroundColor: '#00C464', marginLeft: hp('3%'), position: 'absolute', marginTop: hp('-2%') }}>
+                            <View style={{ height: hp('3.5%'), width: hp('10%'), backgroundColor: '#00C464', marginLeft: hp('3%'), marginTop: hp('-3.5%') }}>
                                 <Text style={{ color: '#FFFFFF', fontSize: hp('2.5%'), textAlign: 'center' }}>Address</Text>
                             </View>
                             <TextInput
                                 style={userAddressError == null ? styles.TextInput : styles.TextInputError}
+                                defaultValue={userAddress}
                                 placeholder="Enter Address"
+                                type='clear'
+                                placeholderTextColor="#737373"
+                                returnKeyType="next"
+                                blurOnSubmit={false}
+                                onSubmitEditing={() => { this.secondTextInputRef.current.focus() }}
+                                onChangeText={(userAddress) => this.setAddress(userAddress)}
                             />
                         </View>
                         <View style={styles.inputview}>
-                            <View style={{ height: hp('3.5%'), width: hp('10%'), backgroundColor: '#00C464', marginLeft: hp('3%'), position: 'absolute', marginTop: hp('-2%') }}>
+                            <View style={{ height: hp('3.5%'), width: hp('10%'), backgroundColor: '#00C464', marginLeft: hp('3%'), marginTop: hp('-3.5%') }}>
                                 <Text style={{ color: '#FFFFFF', fontSize: hp('2.5%'), textAlign: 'center' }}>Quantity</Text>
                             </View>
                             <TextInput
                                 style={userQuentityError == null ? styles.TextInput : styles.TextInputError}
+                                defaultValue={userQuentity}
                                 placeholder="Quantity"
+                                type='clear'
+                                placeholderTextColor="#737373"
+                                keyboardType="numeric"
+                                returnKeyType="done"
+                                ref={this.secondTextInputRef}
+                                onChangeText={(userQuentity) => this.setQuentity(userQuentity)}
+                                onSubmitEditing={() => this.onPressSubmit()}
                             />
                         </View>
                     </View>
                     <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('3%') }}>
-                        <TouchableOpacity style={styles.confBtn} onPress={() => this.props.navigation.navigate('BookConfirmScreen')} >
-                            <Text style={styles.confText}>Confirm Booking</Text>
+                        <TouchableOpacity style={styles.confBtn} onPress={() => this.onPressSubmit()} >
+                            {loading == true ? <Loader /> : <Text style={styles.confText}>Confirm Booking</Text>}
                         </TouchableOpacity>
                     </View>
                     <View style={{ marginTop: hp('3%'), marginLeft: hp('3%') }}>
@@ -244,13 +279,15 @@ const styles = StyleSheet.create({
         fontSize: hp('2.5%'),
         flex: 1,
         padding: hp('2%'),
-        color: '#F4F4F4'
+        color: '#737373',
+        backgroundColor: '#F4F4F4'
     },
     TextInputError: {
         fontSize: hp('2.5%'),
         flex: 1,
         padding: hp('2%'),
-        backgroundColor: '#ffcccc'
+        color: '#737373',
+        backgroundColor: '#FFCCCC'
     },
     confBtn: {
         flexDirection: 'row',

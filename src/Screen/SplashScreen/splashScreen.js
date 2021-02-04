@@ -11,12 +11,12 @@ import AsyncStorage from '@react-native-community/async-storage';
 function SplashScreen(props) {
   useEffect(() => {
     async function fetchMyAPI() {
-      //var getUser = await AsyncStorage.getItem('@authuserlaundry')
-      //      if (getUser != null) {
-      //      props.navigation.navigate('TabNavigation')
-      //  } else {
-      props.navigation.navigate('LoginScreen')
-      //}
+      var getUser = await AsyncStorage.getItem('@authuserlaundry')
+      if (getUser != null) {
+        props.navigation.navigate('TabNavigation')
+      } else {
+        props.navigation.navigate('LoginScreen')
+      }
     }
 
     setTimeout(() => {

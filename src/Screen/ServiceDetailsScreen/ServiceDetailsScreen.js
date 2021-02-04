@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView, ScrollView, StatusBar } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import HTML from 'react-native-render-html'
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 export default class ServiceDetailsScreen extends Component {
     constructor(props) {
@@ -26,6 +27,9 @@ export default class ServiceDetailsScreen extends Component {
                         <Image source={{ uri: ServiceDetails.gallery[0].attachment }} style={{
                             marginTop: hp('0%'), width: wp('100%'), height: hp('40%')
                         }} />
+                        <TouchableOpacity style={styles.backIcon} onPress={() => this.props.navigation.goBack()} >
+                            <MaterialIcons name="arrow-back" size={24} color="#000000" />
+                        </TouchableOpacity>
                     </View>
                     <View>
                         <View style={{ marginTop: hp('1%'), marginLeft: hp('3%') }}>
@@ -40,6 +44,7 @@ export default class ServiceDetailsScreen extends Component {
                             </TouchableOpacity>
                         </View>
                     </View>
+                    <View style={{ marginBottom: hp('15%') }}></View>
                 </ScrollView>
             </SafeAreaView>
         );
@@ -52,14 +57,11 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFFFFF",
     },
     backIcon: {
-        width: wp("7%"),
-        height: wp("7%"),
-        borderRadius: hp('6%'),
-        marginTop: hp('5%'),
-        marginLeft: hp('3%'),
-        alignItems: 'center',
-        justifyContent: 'center'
-    }, booknow: {
+        marginTop: hp('-38%'),
+        marginLeft: wp('-90%'),
+        marginBottom: hp('32%')
+    },
+    booknow: {
         flexDirection: 'row',
         width: wp('80%'),
         backgroundColor: "#00C464",

@@ -64,22 +64,20 @@ export default class RegisterScreen extends Component {
         }
         this.setState({ loading: true })
         try {
-            console.log('body', body);
             await LoginService(body)
                 .then(response => {
                     if (response.error) {
                         this.setState({ loading: false })
                         ToastAndroid.show("Username and Password Invalid!", ToastAndroid.LONG);
-                        this.resetScreen()
                         return
                     }
 
                     if (response != null || response != 'undefind') {
                         this.authenticateUser(response.user)
-                        appConfig.headers["authkey"] = response.user.addedby;
+                        //appConfig.headers["authkey"] = response.user.addedby;
                         ToastAndroid.show("SignIn Success!", ToastAndroid.LONG);
                         this.props.navigation.navigate('TabNavigation')
-                        this.resetScreen()
+                        //this.resetScreen()
                         return
                     }
                 })

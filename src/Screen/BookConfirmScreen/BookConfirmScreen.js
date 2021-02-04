@@ -7,31 +7,25 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 export default class BookConfirmScreen extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-        };
+        this.BookedNumber = this.props.route.params.response;
     }
 
     render() {
         return (
             <SafeAreaView style={styles.container}>
                 <ImageBackground source={require('../../assets/Image/Login.png')} style={styles.backgroundImage}>
-                    <View>
-                        <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={{ marginTop: hp('5%'), marginLeft: hp('3%') }} >
-                            <MaterialIcons name="arrow-back" size={24} color="#000000" />
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('20%') }}>
-                        <Image source={require('../../assets/Image/Oval3.png')} style={{
-                            marginTop: hp('0%'), width: wp('12.5%'), height: hp('7%'),
-                        }} />
+                    <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('30%') }}>
+                        <Image source={require('../../assets/Image/Oval3.png')} style={{ marginTop: hp('0%'), width: 50, height: 50 }} />
                         <AntDesign name="check" size={30} color='#FFFFFF' style={{ position: 'absolute' }} />
                     </View>
                     <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('4%') }}>
                         <Text style={{ fontSize: hp('2.5%') }}> Booking Confirmed </Text>
                     </View>
-                    <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('2%'), marginRight: hp('3%'), marginLeft: hp('3%') }}>
-                        <Text style={{ fontSize: hp('2.5%'), textAlign: 'center' }}> Nulla vitae elit libero, a pharetra augue. Donec id elit non mi porta gravida at eget metus. Donec ullamcorper nulla non metus auctor fringilla. </Text>
-                    </View>
+                    {this.BookedNumber &&
+                        <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('2%'), marginRight: hp('3%'), marginLeft: hp('3%') }}>
+                            <Text style={{ fontSize: hp('2.5%'), textAlign: 'center' }}> Booking ID : {this.BookedNumber.prefix + '-' + this.BookedNumber.number}  </Text>
+                        </View>
+                    }
                     <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('4%') }} onPress={() => this.props.navigation.navigate('HomeScreen')}>
                         <Text style={{ fontSize: hp('2.5%'), color: 'red' }}> Close </Text>
                     </TouchableOpacity>

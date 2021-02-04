@@ -3,7 +3,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Entypo from 'react-native-vector-icons/Entypo'
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import Foundation from 'react-native-vector-icons/Foundation'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 //-------HomeStackScreen
 import HomeScreen from "../Screen/HomeScreen/HomeScreen";
 import ServiceDetailsScreen from "../Screen/ServiceDetailsScreen/ServiceDetailsScreen"
@@ -12,48 +13,116 @@ import BookConfirmScreen from "../Screen/BookConfirmScreen/BookConfirmScreen"
 import HistoryScreen from "../Screen/HistoryScreen/HistoryScreen";
 //-------ProfileStackScreen
 import MyProfileScreen from '../Screen/MyProfileScreen/MyProfileScreen';
+import ViewProfileScreen from '../Screen/MyProfileScreen/ViewProfileScreen';
 import UpdateProfileScreen from '../Screen/MyProfileScreen/UpdateProfileScreen'
+import BackButton from '../Components/BackButton/BackButton';
+import MapScreen from '../Screen/MapScreen/MapScreen';
 
 const ProfileStack = createStackNavigator();
-function ProfileStackScreen() {
+function ProfileStackScreen({ navigation }) {
     return (
-        <ProfileStack.Navigator initialRouteName="MyProfile" headerMode='none'>
-            <ProfileStack.Screen name="MyProfileScreen" component={MyProfileScreen} />
-            <ProfileStack.Screen name="UpdateProfileScreen" component={UpdateProfileScreen} />
+        <ProfileStack.Navigator initialRouteName="MyProfileScreen" headerMode='screen'>
+            <ProfileStack.Screen name="MyProfileScreen"
+                options={{
+                    title: 'Our Services',
+                    headerShown: false
+                }}
+                component={MyProfileScreen} />
+            <ProfileStack.Screen name="ViewProfileScreen" options={{
+                title: 'Profile', headerStyle: {
+                    backgroundColor: '#FFFFFF',
+                    elevation: 0,
+                    shadowOpacity: 0,
+                    borderBottomWidth: 0,
+                }, headerLeft: () => <BackButton onPress={() => navigation.navigate("MyProfileScreen")} />,
+                headerTintColor: '#000000',
+                headerTitleAlign: 'center'
+            }} component={ViewProfileScreen} />
+            <ProfileStack.Screen name="UpdateProfileScreen" options={{
+                title: 'Profile', headerStyle: {
+                    backgroundColor: '#FFFFFF',
+                    elevation: 0,
+                    shadowOpacity: 0,
+                    borderBottomWidth: 0,
+                }, headerLeft: () => <BackButton onPress={() => navigation.navigate("MyProfileScreen")} />,
+                headerTintColor: '#000000',
+                headerTitleAlign: 'center'
+            }} component={UpdateProfileScreen} />
         </ProfileStack.Navigator>
     );
 }
+
 const HomeStack = createStackNavigator();
-function HomeStackScreen() {
+function HomeStackScreen({ navigation }) {
     return (
-        <HomeStack.Navigator initialRouteName="HomeScreen" headerMode='none'>
-            <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
-            <HomeStack.Screen name="ServiceDetailsScreen" component={ServiceDetailsScreen} />
-            <HomeStack.Screen name="BookScreen" component={BookScreen} />
-            <HomeStack.Screen name="BookConfirmScreen" component={BookConfirmScreen} />
-            <HomeStack.Screen name="HistoryScreen" component={HistoryScreen} />
+        <HomeStack.Navigator initialRouteName="HomeScreen" headerMode='screen'>
+            <HomeStack.Screen name="HomeScreen" options={{
+                title: 'Our Services', headerStyle: {
+                    backgroundColor: '#FFFFFF',
+                    elevation: 0,
+                    shadowOpacity: 0,
+                    borderBottomWidth: 0,
+                }, headerLeft: () => { },
+            }}
+                component={HomeScreen} />
+            <HomeStack.Screen name="ServiceDetailsScreen"
+                options={{
+                    title: 'Our Services',
+                    headerShown: false
+                }}
+                component={ServiceDetailsScreen} />
+            <HomeStack.Screen name="BookScreen" options={{
+                title: 'Washing', headerStyle: {
+                    backgroundColor: '#FFFFFF',
+                    elevation: 0,
+                    shadowOpacity: 0,
+                    borderBottomWidth: 0,
+                }, headerLeft: () => <BackButton onPress={() => navigation.navigate("ServiceDetailsScreen")} />,
+            }} component={BookScreen} />
+            <HomeStack.Screen name="BookConfirmScreen"
+                options={{
+                    title: '',
+                    headerShown: false
+                }}
+                component={BookConfirmScreen} />
+            <HomeStack.Screen name="HistoryScreen" options={{
+                title: 'History', headerStyle: {
+                    backgroundColor: '#FFFFFF',
+                    elevation: 0,
+                    shadowOpacity: 0,
+                    borderBottomWidth: 0,
+                }, headerLeft: () => <BackButton onPress={() => navigation.navigate("HomeScreen")} />,
+            }} component={HistoryScreen} />
         </HomeStack.Navigator>
     );
 }
 
-//const AppStack = createStackNavigator();
-// function AppStackScreen({ navigation }) {
-//     return (
-//         <AppStack.Navigator initialRouteName="Staff" headerMode='screen' >
-//             <AppStack.Screen name="Staff" options={{
-//                 title: 'StaffDetails', headerStyle: {
-//                     backgroundColor: '#FFFFFF',
-//                     elevation: 0,
-//                     shadowOpacity: 0,
-//                     borderBottomWidth: 0,
-//                 }, headerLeft: () =>
-//                     <MenuIcon onPress={() => navigation.navigate("StaffDetails")} />,
+const HistoryStack = createStackNavigator();
+function HistoryStackScreen({ navigation }) {
+    return (
+        <HistoryStack.Navigator initialRouteName="HistoryScreen" headerMode='screen'>
+            <HistoryStack.Screen name="HistoryScreen"
+                options={{
+                    title: 'History', headerStyle: {
+                        backgroundColor: '#FFFFFF',
+                        elevation: 0,
+                        shadowOpacity: 0,
+                        borderBottomWidth: 0,
+                    }, headerLeft: () => <BackButton onPress={() => navigation.navigate("HomeScreen")} />,
+                }}
+                component={HistoryScreen} />
+        </HistoryStack.Navigator>
+    );
+}
 
-//             }}
-//                 component={AppScreen} />
-//         </AppStack.Navigator>
-//     );
-// }
+const MapStack = createStackNavigator();
+function MapStackScreen({ navigation }) {
+    return (
+        <MapStack.Navigator initialRouteName="MapScreen" headerMode='none'>
+            <MapStack.Screen name="MapScreen" component={MapScreen} />
+        </MapStack.Navigator>
+    );
+}
 
 const Tab = createBottomTabNavigator();
 export default function TabNavigation() {
@@ -63,8 +132,8 @@ export default function TabNavigation() {
                 tabBarIcon: ({ focused, color, size }) => {
                     if (route.name === 'Home') {
                         return (
-                            <Ionicons
-                                name={focused ? 'ios-home' : 'ios-home'}
+                            <Foundation
+                                name={focused ? 'home' : 'home'}
                                 size={20}
                                 color={color}
                             />
@@ -88,8 +157,8 @@ export default function TabNavigation() {
                     }
                     else if (route.name === 'Profile') {
                         return (
-                            <Entypo
-                                name={focused ? 'dots-three-vertical' : 'dots-three-vertical'}
+                            <FontAwesome5
+                                name={focused ? 'user' : 'user'}
                                 size={20}
                                 color={color}
                             />
@@ -112,8 +181,8 @@ export default function TabNavigation() {
             }}
         >
             <Tab.Screen name="Home" component={HomeStackScreen} />
-            <Tab.Screen name="Book" component={BookScreen} />
-            <Tab.Screen name="History" component={HistoryScreen} />
+            <Tab.Screen name="Book" component={MapStackScreen} />
+            <Tab.Screen name="History" component={HistoryStackScreen} />
             <Tab.Screen name="Profile" component={ProfileStackScreen} />
         </Tab.Navigator>
     );

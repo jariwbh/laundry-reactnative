@@ -28,31 +28,4 @@ const UpdateUserService = (value) => {
         });
 }
 
-
-const staffService = () => {
-    const body =
-    {
-        "search": [{
-            "searchfield": "status",
-            "searchvalue": "active",
-            "criteria": "eq",
-            "datatype": "text"
-        },
-        ]
-    }
-    const requestOptions = {
-        method: 'POST',
-        headers: appConfig.headers,
-        body: JSON.stringify(body)
-    };
-
-    return fetch(appConfig.baseUrl + 'users/filter', requestOptions)
-        .then(response => response.json())
-        .catch(error => {
-            console.error('There was an error!', error);
-        });
-}
-
-
-
-export { UserService, UpdateUserService, staffService, };
+export { UserService, UpdateUserService };
