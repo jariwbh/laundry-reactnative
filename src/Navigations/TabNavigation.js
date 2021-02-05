@@ -17,6 +17,7 @@ import ViewProfileScreen from '../Screen/MyProfileScreen/ViewProfileScreen';
 import UpdateProfileScreen from '../Screen/MyProfileScreen/UpdateProfileScreen'
 import BackButton from '../Components/BackButton/BackButton';
 import MapScreen from '../Screen/MapScreen/MapScreen';
+import SearchMapScreen from '../Screen/MapScreen/SearchMapScreen';
 
 const ProfileStack = createStackNavigator();
 function ProfileStackScreen({ navigation }) {
@@ -120,6 +121,7 @@ function MapStackScreen({ navigation }) {
     return (
         <MapStack.Navigator initialRouteName="MapScreen" headerMode='none'>
             <MapStack.Screen name="MapScreen" component={MapScreen} />
+            <MapStack.Screen name="SearchMapScreen" component={SearchMapScreen} />
         </MapStack.Navigator>
     );
 }
