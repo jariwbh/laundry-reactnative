@@ -4,7 +4,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import moment from 'moment'
 import { BookHistoryService } from '../../Services/BookHistoryService/BookHistoryService';
 import AsyncStorage from '@react-native-community/async-storage'
-import Loading from '../../Components/Loader/Loading'
+import Loading from '../../Components/Loader/Loader'
 import { TabView, SceneMap } from 'react-native-tab-view';
 import Animated from 'react-native-reanimated';
 import { appModel } from '../../Helpers/appModel';
@@ -183,11 +183,7 @@ export default class App extends React.Component {
     onRefresh = () => {
         const { _id } = this.state;
         this.setState({ refreshing: true });
-        console.log('id', _id)
         this.BookHistoryService(_id);
-        FirstRoute();
-        SecondRoute();
-        ThiredRoute();
         this.wait(3000).then(() => this.setState({ refreshing: false }));
     }
 
@@ -214,22 +210,34 @@ export default class App extends React.Component {
     }
 
     render() {
-        const { refreshing, loader, status } = this.state;
+        const { refreshing, loader, BookHistoryService } = this.state;
         this.wait(3000).then(() => this.setState({ refreshing: false }));
-
+        console.log('BookHistoryService', BookHistoryService)
         return (
             <SafeAreaView style={styles.container}>
-                <ScrollView refreshControl={<RefreshControl refreshing={refreshing} tintColor="green"
-                    title="Pull to refresh" tintColor="#00C464" titleColor="#00C464" colors={["#00C464"]} onRefresh={this.onRefresh} />}
-                    showsVerticalScrollIndicator={false}>
-                    <TabView
-                        navigationState={this.state}
-                        renderScene={this._renderScene}
-                        renderTabBar={this._renderTabBar}
-                        onIndexChange={this._handleIndexChange}
-                    />
-                </ScrollView>
-                <View style={{ marginBottom: 60 }}></View>
+                {(BookHistoryService == null) || (BookHistoryService && BookHistoryService.length == 0)
+                    ?
+                    (loader == false ?
+                        <View style={{ alignItems: "center", justifyContent: 'center', marginTop: ('30%') }}>
+                            <Text style={{ alignItems: "center", justifyContent: 'center', fontSize: hp('2%'), color: '#595959' }}>Data Not Available</Text>
+                        </View>
+                        : <View style={{ marginTop: hp('15%') }}><Loading /></View>
+                    )
+                    :
+                    <>
+                        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} tintColor="green"
+                            title="Pull to refresh" tintColor="#00C464" titleColor="#00C464" colors={["#00C464"]} onRefresh={this.onRefresh} />}
+                            showsVerticalScrollIndicator={false}>
+                            <TabView
+                                navigationState={this.state}
+                                renderScene={this._renderScene}
+                                renderTabBar={this._renderTabBar}
+                                onIndexChange={this._handleIndexChange}
+                            />
+                        </ScrollView>
+                        <View style={{ marginBottom: 60 }}></View>
+                    </>
+                }
             </SafeAreaView>
         );
     }

@@ -7,6 +7,7 @@ import {
   Animated,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import MyPermissionController from '../../Helpers/appPermission'
 
 function SplashScreen(props) {
   useEffect(() => {
@@ -22,6 +23,14 @@ function SplashScreen(props) {
     setTimeout(() => {
       fetchMyAPI();
     }, 3000);
+
+    setTimeout(
+      () =>
+        MyPermissionController.checkAndRequestStoragePermission()
+          .then((granted) => console.log('>Storage Permission Granted'))
+          .catch((err) => console.log(err)),
+      500,
+    );
   }, []);
 
   const { width, height } = Dimensions.get('screen');
