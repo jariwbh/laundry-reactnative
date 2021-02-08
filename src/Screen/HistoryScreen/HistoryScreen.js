@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity, ScrollView, Image, Dimensions, StyleSheet, SafeAreaView, FlatList, RefreshControl } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import Entypo from 'react-native-vector-icons/Entypo';
 import moment from 'moment'
 import { BookHistoryService } from '../../Services/BookHistoryService/BookHistoryService';
 import AsyncStorage from '@react-native-community/async-storage'
@@ -10,7 +9,7 @@ import { TabView, SceneMap } from 'react-native-tab-view';
 import Animated from 'react-native-reanimated';
 import { appModel } from '../../Helpers/appModel';
 
-const renderBookHistoryAllService = ({ item }) => (
+const renderFirstRoute = ({ item }) => (
     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <View style={styles.Allview}>
             <View style={{ marginTop: hp('1%'), marginLeft: hp('1%') }}>
@@ -22,7 +21,21 @@ const renderBookHistoryAllService = ({ item }) => (
             <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
                 <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Total</Text>
                 <Text style={{ fontSize: hp('2%'), color: '#193628' }}>₹ {item.refid.charges}</Text>
-                <Text style={{ fontSize: hp('2%'), color: '#FF1313', textTransform: 'capitalize' }}>{item.status}</Text>
+                {item.status == "requested" &&
+                    <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#3788D8' }}>{item.status}</Text>
+                }
+                {item.status == "confirmed" &&
+                    <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#9C27B0' }}>{item.status}</Text>
+                }
+                {item.status == "checkout" &&
+                    <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#4CAF50' }}>{item.status}</Text>
+                }
+                {item.status == "cancel" &&
+                    <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#F44336' }}>{item.status}</Text>
+                }
+                {item.status == "noshow" &&
+                    <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#FF9800' }}>{item.status}</Text>
+                }
             </View>
         </View>
     </View>
@@ -31,61 +44,67 @@ const renderBookHistoryAllService = ({ item }) => (
 const FirstRoute = () => (
     <FlatList
         data={appModel.bookdata}
-        renderItem={renderBookHistoryAllService}
+        renderItem={renderFirstRoute}
         keyExtractor={item => `${item._id}`}
     />
 );
 
-const SecondRoute = () => (
+const renderSecondRoute = ({ item }) => (
+    item.status == "requested" &&
     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <View style={styles.Allview}>
             <View style={{ marginTop: hp('1%'), marginLeft: hp('1%') }}>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>18th Feb 2018, 03:30 PM</Text>
+                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{moment(item.appointmentdate).format('LL') + ' ' + item.timeslot.starttime}</Text>
             </View>
             <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>4 Quantity</Text>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>3rd Ironong</Text>
+                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{item.property.quentity} Quantity</Text>
             </View>
             <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
                 <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Total</Text>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>₹1000</Text>
-                <Text style={{ fontSize: hp('2%'), color: '#FF1313' }}>Pending Payment</Text>
+                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>₹ {item.refid.charges}</Text>
+                {item.status == "requested" &&
+                    <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#3788D8' }}>{item.status}</Text>
+                }
+            </View>
+        </View>
+    </View>
+);
+
+const SecondRoute = () => (
+    <FlatList
+        data={appModel.bookdata}
+        renderItem={renderSecondRoute}
+        keyExtractor={item => `${item._id}`}
+    />
+);
+
+const renderThiredRoute = ({ item }) => (
+    item.status == "checkout" &&
+    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <View style={styles.Allview}>
+            <View style={{ marginTop: hp('1%'), marginLeft: hp('1%') }}>
+                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{moment(item.appointmentdate).format('LL') + ' ' + item.timeslot.starttime}</Text>
+            </View>
+            <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
+                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{item.property.quentity} Quantity</Text>
+            </View>
+            <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
+                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Total</Text>
+                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>₹ {item.refid.charges}</Text>
+                {item.status == "checkout" &&
+                    <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#9C27B0' }}>{item.status}</Text>
+                }
             </View>
         </View>
     </View>
 );
 
 const ThiredRoute = () => (
-    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <View style={styles.Allview}>
-            <View style={{ marginTop: hp('1%'), marginLeft: hp('1%') }}>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>18th Feb 2018, 03:30 PM</Text>
-            </View>
-            <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>4 Quantity</Text>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>3rd Ironong</Text>
-            </View>
-            <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Total</Text>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>₹1000</Text>
-                <Text style={{ fontSize: hp('2%'), color: '#FF1313' }}>Pending Payment</Text>
-            </View>
-        </View>
-        <View style={styles.Allview}>
-            <View style={{ marginTop: hp('1%'), marginLeft: hp('1%') }}>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>18th Feb 2018, 03:30 PM</Text>
-            </View>
-            <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>4 Quantity</Text>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>3rd Ironong</Text>
-            </View>
-            <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Total</Text>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>₹1000</Text>
-                <Text style={{ fontSize: hp('2%'), color: '#FF1313' }}>Pending Payment</Text>
-            </View>
-        </View>
-    </View>
+    <FlatList
+        data={appModel.bookdata}
+        renderItem={renderThiredRoute}
+        keyExtractor={item => `${item._id}`}
+    />
 );
 
 export default class App extends React.Component {
@@ -163,8 +182,12 @@ export default class App extends React.Component {
 
     onRefresh = () => {
         const { _id } = this.state;
-        this.setState({ refreshing: true })
-        this.BookHistoryService(_id)
+        this.setState({ refreshing: true });
+        console.log('id', _id)
+        this.BookHistoryService(_id);
+        FirstRoute();
+        SecondRoute();
+        ThiredRoute();
         this.wait(3000).then(() => this.setState({ refreshing: false }));
     }
 
@@ -180,17 +203,6 @@ export default class App extends React.Component {
         })
     }
 
-    setstateFilter = async (status) => {
-        if (status !== 'ALL') {
-            let datalist = dataObj.filter(x => x.status == status)
-            this.setState({ datalist: datalist })
-        }
-        else {
-            this.setState({ datalist: dataObj })
-        }
-        await this.setState({ status: status });
-    }
-
     renderItem = ({ item, index }) => {
         return (
             <View key={index} style={styles.itemContainer}>
@@ -202,7 +214,7 @@ export default class App extends React.Component {
     }
 
     render() {
-        const { BookHistoryService, refreshing, loader, status } = this.state;
+        const { refreshing, loader, status } = this.state;
         this.wait(3000).then(() => this.setState({ refreshing: false }));
 
         return (
