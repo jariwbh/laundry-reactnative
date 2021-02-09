@@ -15,18 +15,14 @@ export default class RegisterScreen extends Component {
             usernameError: null,
             mobilenumber: null,
             mobilenumberError: null,
-            address: null,
-            addressError: null,
             loading: false,
         }
         this.setFullName = this.setFullName.bind(this);
         this.setUserName = this.setUserName.bind(this);
         this.setMobileNumber = this.setMobileNumber.bind(this);
-        this.setAddress = this.setAddress.bind(this);
         this.onPressSubmit = this.onPressSubmit.bind(this);
         this.secondTextInputRef = React.createRef();
         this.TeardTextInputRef = React.createRef();
-        this.FourTextInputRef = React.createRef();
     }
 
     setFullName(fullname) {
@@ -59,20 +55,12 @@ export default class RegisterScreen extends Component {
         return this.setState({ mobilenumber: mobilenumber, mobilenumberError: null })
     }
 
-    setAddress(address) {
-        if (!address || address.length <= 0) {
-            return this.setState({ addressError: 'Address cannot be empty', address: null });
-        }
-        return this.setState({ address: address, addressError: null })
-    }
-
     onPressSubmit = async () => {
-        const { fullname, username, mobilenumber, address } = this.state;
+        const { fullname, username, mobilenumber } = this.state;
         if (!fullname || !username || !mobilenumber) {
             this.setFullName(fullname)
             this.setUserName(username)
             this.setMobileNumber(mobilenumber)
-            this.setAddress(address)
             return;
         }
         const body = {
@@ -80,7 +68,6 @@ export default class RegisterScreen extends Component {
                 fullname: fullname,
                 email: username,
                 mobile_number: mobilenumber,
-                address: address
             }
         }
         this.setState({ loading: true })
@@ -107,7 +94,7 @@ export default class RegisterScreen extends Component {
     }
 
     render() {
-        const { fullnameError, usernameError, mobilenumberError, addressError } = this.state;
+        const { fullnameError, usernameError, mobilenumberError } = this.state;
         return (
             <SafeAreaView style={styles.container}>
                 <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
@@ -158,24 +145,11 @@ export default class RegisterScreen extends Component {
                                     placeholder="Mobile Number"
                                     type='clear'
                                     placeholderTextColor="#193628"
-                                    returnKeyType="next"
-                                    keyboardType="number-pad"
-                                    onSubmitEditing={() => { this.FourTextInputRef.current.focus() }}
-                                    ref={this.TeardTextInputRef}
-                                    onChangeText={(mobilenumber) => this.setMobileNumber(mobilenumber)}
-                                />
-                            </View>
-                            <View style={styles.inputView}>
-                                <TextInput
-                                    style={addressError == null ? styles.TextInput : styles.TextInputError}
-                                    placeholder="Address"
-                                    type='clear'
-                                    defaultValue={this.state.address}
-                                    placeholderTextColor="#193628"
                                     returnKeyType="done"
-                                    ref={this.FourTextInputRef}
+                                    keyboardType="number-pad"
+                                    ref={this.TeardTextInputRef}
                                     onSubmitEditing={() => this.onPressSubmit()}
-                                    onChangeText={(address) => this.setAddress(address)}
+                                    onChangeText={(mobilenumber) => this.setMobileNumber(mobilenumber)}
                                 />
                             </View>
                         </View>

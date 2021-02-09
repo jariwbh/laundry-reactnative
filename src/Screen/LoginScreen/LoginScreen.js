@@ -73,12 +73,18 @@ export default class RegisterScreen extends Component {
                     }
 
                     if (response != null || response != 'undefind') {
-                        this.authenticateUser(response.user)
-                        //appConfig.headers["authkey"] = response.user.addedby;
-                        ToastAndroid.show("SignIn Success!", ToastAndroid.LONG);
-                        this.props.navigation.navigate('TabNavigation')
-                        //this.resetScreen()
-                        return
+                        if (response.user.property != null || response.user.property.address) {
+                            this.authenticateUser(response.user)
+                            ToastAndroid.show("SignIn Success!", ToastAndroid.LONG);
+                            //this.resetScreen();
+                            return this.props.navigation.navigate('MapScreen')
+                        } else {
+                            this.authenticateUser(response.user)
+                            //---------------- appConfig.headers["authkey"] = response.user.addedby; -------------------
+                            ToastAndroid.show("SignIn Success!", ToastAndroid.LONG);
+                            this.props.navigation.navigate('TabNavigation')
+                            //this.resetScreen()
+                        }
                     }
                 })
         }

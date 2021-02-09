@@ -77,7 +77,6 @@ export default class HomeScreen extends Component {
 
     render() {
         const { serviceList, loader, refreshing } = this.state
-        console.log('serviceList', serviceList)
         return (
             <SafeAreaView style={styles.container}>
                 <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />

@@ -13,8 +13,14 @@ function SplashScreen(props) {
   useEffect(() => {
     async function fetchMyAPI() {
       var getUser = await AsyncStorage.getItem('@authuserlaundry')
-      if (getUser != null) {
-        props.navigation.navigate('TabNavigation')
+      var userData;
+      userData = JSON.parse(getUser)
+      if (userData != null) {
+        if (userData.property != null || userData.property.address != null) {
+          return props.navigation.navigate('MapScreen')
+        } else {
+          return props.navigation.navigate('TabNavigation')
+        }
       } else {
         props.navigation.navigate('LoginScreen')
       }

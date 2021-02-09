@@ -5,6 +5,8 @@ import TabNavigation from './TabNavigation';
 import LoginScreen from '../Screen/LoginScreen/LoginScreen';
 import RegisterScreen from '../Screen/RegisterScreen/RegisterScreen';
 import SplashScreen from '../Screen/SplashScreen/splashScreen';
+import SearchMapScreen from '../Screen/MapScreen/SearchMapScreen';
+import MapScreen from '../Screen/MapScreen/MapScreen';
 const Stack = createStackNavigator();
 
 export default NavigationsApp = () => {
@@ -15,6 +17,8 @@ export default NavigationsApp = () => {
                 <Stack.Screen name="LoginScreen" component={LoginScreen} />
                 <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
                 <Stack.Screen name="TabNavigation" component={TabNavigation} />
+                <Stack.Screen name="MapScreen" component={MapScreen} />
+                <Stack.Screen name="SearchMapScreen" component={SearchMapScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );

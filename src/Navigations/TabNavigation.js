@@ -116,16 +116,6 @@ function HistoryStackScreen({ navigation }) {
     );
 }
 
-const MapStack = createStackNavigator();
-function MapStackScreen({ navigation }) {
-    return (
-        <MapStack.Navigator initialRouteName="MapScreen" headerMode='none'>
-            <MapStack.Screen name="MapScreen" component={MapScreen} />
-            <MapStack.Screen name="SearchMapScreen" component={SearchMapScreen} />
-        </MapStack.Navigator>
-    );
-}
-
 const Tab = createBottomTabNavigator();
 export default function TabNavigation() {
     return (
@@ -183,8 +173,7 @@ export default function TabNavigation() {
             }}
         >
             <Tab.Screen name="Home" component={HomeStackScreen} />
-            <Tab.Screen name="Book" component={MapStackScreen} />
-            <Tab.Screen name="History" options={{ unmountOnBlur: true }} component={HistoryStackScreen} />
+            <Tab.Screen name="History" component={HistoryStackScreen} />
             <Tab.Screen name="Profile" component={ProfileStackScreen} />
         </Tab.Navigator>
     );

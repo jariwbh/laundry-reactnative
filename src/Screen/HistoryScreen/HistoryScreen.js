@@ -212,7 +212,6 @@ export default class App extends React.Component {
     render() {
         const { refreshing, loader, BookHistoryService } = this.state;
         this.wait(3000).then(() => this.setState({ refreshing: false }));
-        console.log('BookHistoryService', BookHistoryService)
         return (
             <SafeAreaView style={styles.container}>
                 {(BookHistoryService == null) || (BookHistoryService && BookHistoryService.length == 0)
