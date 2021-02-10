@@ -21,29 +21,22 @@ export default class ViewProfileScreen extends Component {
             <SafeAreaView style={styles.container}>
                 <View style={styles.profileView}>
                     <View style={{ margin: hp('1%'), justifyContent: 'center', alignItems: 'center' }}>
-                        <Image source={{ uri: userProfile }} style={{
-                            marginTop: hp('0%'), width: 100, height: 100, borderRadius: hp('10%'), marginLeft: hp('0%')
-                        }} />
+                        <Image source={{ uri: userProfile && userProfile !== null ? userProfile : "https://res.cloudinary.com/dnogrvbs2/image/upload/v1610428971/userimage_qif8wv.jpg" }}
+                            style={{ marginTop: hp('0%'), width: 100, height: 100, borderRadius: hp('10%') }} />
                     </View>
                     <View style={{ margin: hp('0.5%'), justifyContent: 'center', alignItems: 'center' }}>
-                        <View>
-                            <Text style={{ fontSize: hp('3.5%'), textTransform: 'capitalize' }} >{userName} </Text>
-                        </View>
+                        <Text style={{ fontSize: hp('3.5%'), textTransform: 'capitalize' }} >{userName} </Text>
                     </View>
                     <View style={{ margin: hp('0.5%'), justifyContent: 'center', alignItems: 'center' }}>
-                        <View>
-                            <Text style={{ fontSize: hp('2%'), color: '#737373' }} >{userMobile} </Text>
-                        </View>
+                        <Text style={{ fontSize: hp('2.5%'), color: '#737373' }} >{userMobile} </Text>
                     </View>
                     {userAddress &&
-                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                            <View>
-                                <Text style={{ fontSize: hp('2%'), color: '#737373', textTransform: 'capitalize' }} >{userAddress} </Text>
-                            </View>
+                        <View style={{ justifyContent: 'center', alignItems: 'center', marginLeft: hp('10%'), marginRight: hp('10%') }}>
+                            <Text style={{ fontSize: hp('2%'), color: '#737373', textTransform: 'capitalize' }} >{userAddress} </Text>
                         </View>
                     }
                 </View>
-                <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('2%') }}>
+                <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('5%') }}>
                     <TouchableOpacity style={styles.editBtn} onPress={() => { this.props.navigation.navigate('UpdateProfileScreen', { userDetails }) }} >
                         {this.state.loading == true ? <Loader /> : <Text style={styles.editText}>Edit</Text>}
                     </TouchableOpacity>

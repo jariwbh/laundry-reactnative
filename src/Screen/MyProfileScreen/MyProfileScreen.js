@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity, ToastAndroid } from 'react-native';
+import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity, ToastAndroid, Share } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import AsyncStorage from '@react-native-community/async-storage'
 import Loader from '../../Components/Loader/Loader';
@@ -51,7 +51,7 @@ export default class MyProfileScreen extends Component {
     onPressUpdateProfile() {
         const { userDetails } = this.state;
         if (userDetails != null) {
-            this.props.navigation.navigate('ViewProfileScreen', { userDetails })
+            this.props.navigation.replace('ViewProfileScreen', { userDetails })
         }
     }
 
@@ -61,6 +61,26 @@ export default class MyProfileScreen extends Component {
             this.props.navigation.replace('LoginScreen')
     }
 
+    onShare = async () => {
+        try {
+            const result = await Share.share({
+                message: 'Laundry Mobile App | App DownLoad URL : https://play.google.com/store/apps/dev?id=7809689132535053719'
+            });
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                    ToastAndroid.show("share", ToastAndroid.SHORT);
+                } else {
+                    ToastAndroid.show("share", ToastAndroid.SHORT);
+                }
+            } else if (result.action === Share.dismissedAction) {
+                ToastAndroid.show("share failed!", ToastAndroid.SHORT);
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
+
     render() {
         const { userDetails, userProfile, userName, userAddress, userMobile, loader } = this.state;
         return (
@@ -68,10 +88,8 @@ export default class MyProfileScreen extends Component {
                 {loader == true ? <Loader /> : <>
                     <View style={styles.profileView}>
                         <View style={{ flexDirection: 'row', marginTop: hp('3%'), marginLeft: hp('3%'), marginRight: hp('5%') }}>
-                            <Image source={{ uri: userProfile }} style={{
-                                marginTop: hp('0%'), width: 60, height: 60, borderRadius: hp('7%'), marginLeft: hp('0%')
-                            }}
-                            />
+                            <Image source={{ uri: userProfile && userProfile !== null ? userProfile : "https://res.cloudinary.com/dnogrvbs2/image/upload/v1610428971/userimage_qif8wv.jpg" }}
+                                style={{ width: 60, height: 60, borderRadius: hp('7%') }} />
                             <View style={{ margin: hp('2%'), marginLeft: hp('5%') }}>
                                 <View>
                                     <Text style={{ fontSize: hp('2.5%'), marginRight: hp('0%'), textTransform: 'capitalize' }} >{userName}</Text>
@@ -93,26 +111,34 @@ export default class MyProfileScreen extends Component {
                             </View>
                             <View style={{ marginTop: hp('2%'), flexDirection: 'row', justifyContent: 'space-between', marginLeft: hp('3%'), marginRight: hp('3%') }}>
                                 <Text style={{ fontSize: hp('2%') }}>Address</Text>
-                                <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize' }}>{userAddress}</Text>
+                                <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', marginLeft: hp('20%'), marginRight: hp('4%') }}>{userAddress}</Text>
                             </View>
                             <View style={{ alignItems: 'center', marginTop: hp('2%'), flexDirection: 'row' }}>
                                 <View style={{ flex: 1, height: 1, backgroundColor: '#e6e6e6' }} />
                             </View>
-                            <View style={{ marginTop: hp('2%'), flexDirection: 'row', justifyContent: 'space-between', marginLeft: hp('3%') }}>
+                            <TouchableOpacity
+                                style={{ marginTop: hp('2%'), flexDirection: 'row', justifyContent: 'space-between', marginLeft: hp('3%') }}
+                                onPress={() => this.props.navigation.navigate('SupportScreen')}
+                            >
                                 <Text style={{ fontSize: hp('2%') }}>Support</Text>
-                            </View>
+                            </TouchableOpacity>
                             <View style={{ alignItems: 'center', marginTop: hp('2%'), flexDirection: 'row' }}>
                                 <View style={{ flex: 1, height: 1, backgroundColor: '#e6e6e6' }} />
                             </View>
-                            <View style={{ marginTop: hp('2%'), flexDirection: 'row', justifyContent: 'space-between', marginLeft: hp('3%') }}>
+                            <TouchableOpacity
+                                style={{ marginTop: hp('2%'), flexDirection: 'row', justifyContent: 'space-between', marginLeft: hp('3%') }}
+                                onPress={() => this.onShare()}>
                                 <Text style={{ fontSize: hp('2%') }}>Share</Text>
-                            </View>
+                            </TouchableOpacity>
                             <View style={{ alignItems: 'center', marginTop: hp('2%'), flexDirection: 'row' }}>
                                 <View style={{ flex: 1, height: 1, backgroundColor: '#e6e6e6' }} />
                             </View>
-                            <View style={{ marginTop: hp('2%'), flexDirection: 'row', justifyContent: 'space-between', marginLeft: hp('3%') }}>
+                            <TouchableOpacity
+                                style={{ marginTop: hp('2%'), flexDirection: 'row', justifyContent: 'space-between', marginLeft: hp('3%') }}
+                                onPress={() => this.props.navigation.navigate('TermsAndConditionScreen')}
+                            >
                                 <Text style={{ fontSize: hp('2%') }}>Terms & Condition</Text>
-                            </View>
+                            </TouchableOpacity>
                             <View style={{ alignItems: 'center', marginTop: hp('2%'), flexDirection: 'row' }}>
                                 <View style={{ flex: 1, height: 1, backgroundColor: '#e6e6e6' }} />
                             </View>

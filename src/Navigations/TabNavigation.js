@@ -16,8 +16,8 @@ import MyProfileScreen from '../Screen/MyProfileScreen/MyProfileScreen';
 import ViewProfileScreen from '../Screen/MyProfileScreen/ViewProfileScreen';
 import UpdateProfileScreen from '../Screen/MyProfileScreen/UpdateProfileScreen'
 import BackButton from '../Components/BackButton/BackButton';
-import MapScreen from '../Screen/MapScreen/MapScreen';
-import SearchMapScreen from '../Screen/MapScreen/SearchMapScreen';
+import SupportScreen from '../Screen/SupportScreen/SupportScreen';
+import TermsAndConditionScreen from '../Screen/TermsAndConditionScreen/TermsAndConditionScreen';
 
 const ProfileStack = createStackNavigator();
 function ProfileStackScreen({ navigation }) {
@@ -49,6 +49,26 @@ function ProfileStackScreen({ navigation }) {
                 headerTintColor: '#000000',
                 headerTitleAlign: 'center'
             }} component={UpdateProfileScreen} />
+            <ProfileStack.Screen name="SupportScreen" options={{
+                title: 'Support', headerStyle: {
+                    backgroundColor: '#FFFFFF',
+                    elevation: 0,
+                    shadowOpacity: 0,
+                    borderBottomWidth: 0,
+                }, headerLeft: () => <BackButton onPress={() => navigation.navigate("MyProfileScreen")} />,
+                headerTintColor: '#000000',
+                headerTitleAlign: 'center'
+            }} component={SupportScreen} />
+            <ProfileStack.Screen name="TermsAndConditionScreen" options={{
+                title: 'Terms & Condition', headerStyle: {
+                    backgroundColor: '#FFFFFF',
+                    elevation: 0,
+                    shadowOpacity: 0,
+                    borderBottomWidth: 0,
+                }, headerLeft: () => <BackButton onPress={() => navigation.navigate("MyProfileScreen")} />,
+                headerTintColor: '#000000',
+                headerTitleAlign: 'center'
+            }} component={TermsAndConditionScreen} />
         </ProfileStack.Navigator>
     );
 }

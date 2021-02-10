@@ -16,7 +16,7 @@ function SplashScreen(props) {
       var userData;
       userData = JSON.parse(getUser)
       if (userData != null) {
-        if (userData.property != null || userData.property.address != null) {
+        if (userData.property.address == null && userData.property.address == undefined) {
           return props.navigation.navigate('MapScreen')
         } else {
           return props.navigation.navigate('TabNavigation')

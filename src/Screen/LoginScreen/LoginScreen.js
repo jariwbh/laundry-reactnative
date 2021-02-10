@@ -10,9 +10,9 @@ export default class RegisterScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: 'LAUND-34011',
+            username: null,
             usererror: null,
-            password: 'LAUND-34011',
+            password: null,
             passworderror: null,
             loading: false,
         };
@@ -100,17 +100,17 @@ export default class RegisterScreen extends Component {
             <SafeAreaView style={styles.container}>
                 <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
                 <ImageBackground source={require('../../assets/Image/Login.png')} style={styles.backgroundImage}>
-                    <View style={{ marginTop: hp('5%'), marginLeft: hp('2%') }}>
-                        <Image source={require('../../assets/Image/Logo.png')} style={{ height: hp('7%'), width: wp('40%'), borderRadius: hp('1%'), }}
-                        />
-                    </View>
-                    <View style={{ marginTop: hp('5%'), marginLeft: hp('3%') }}>
-                        <Text style={{ fontSize: hp('3.5%'), fontWeight: 'bold' }}>Welcome Back!</Text>
-                    </View>
-                    <View style={{ marginTop: hp('1%'), marginLeft: hp('3%'), marginRight: hp('10%') }}>
-                        <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Donec sed odio dui. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</Text>
-                    </View>
                     <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={'always'}>
+                        <View style={{ marginTop: hp('5%'), marginLeft: hp('2%') }}>
+                            <Image source={require('../../assets/Image/Logo.png')} style={{ height: hp('7%'), width: wp('40%'), borderRadius: hp('1%'), }}
+                            />
+                        </View>
+                        <View style={{ marginTop: hp('5%'), marginLeft: hp('3%') }}>
+                            <Text style={{ fontSize: hp('3.5%'), fontWeight: 'bold' }}>Welcome Back!</Text>
+                        </View>
+                        <View style={{ marginTop: hp('1%'), marginLeft: hp('3%'), marginRight: hp('10%') }}>
+                            <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Customize your services, appointment rules with flexible setup options. View an entire booking, set special discounts for services.</Text>
+                        </View>
                         <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('2%') }}>
                             <View style={styles.inputView}>
                                 <TextInput
@@ -170,13 +170,13 @@ export default class RegisterScreen extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 1
     },
     backgroundImage: {
         flex: 1,
         resizeMode: 'cover',
-        // height: hp('100%'),
-        // width: wp('100%')
+        height: hp('100%'),
+        width: wp('100%')
     },
     inputView: {
         flexDirection: 'row',

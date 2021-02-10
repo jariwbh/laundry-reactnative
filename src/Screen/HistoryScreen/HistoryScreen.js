@@ -5,107 +5,7 @@ import moment from 'moment'
 import { BookHistoryService } from '../../Services/BookHistoryService/BookHistoryService';
 import AsyncStorage from '@react-native-community/async-storage'
 import Loading from '../../Components/Loader/Loader'
-import { TabView, SceneMap } from 'react-native-tab-view';
-import Animated from 'react-native-reanimated';
 import { appModel } from '../../Helpers/appModel';
-
-const renderFirstRoute = ({ item }) => (
-    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <View style={styles.Allview}>
-            <View style={{ marginTop: hp('1%'), marginLeft: hp('1%') }}>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{moment(item.appointmentdate).format('LL') + ' ' + item.timeslot.starttime}</Text>
-            </View>
-            <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{item.property.quentity} Quantity</Text>
-            </View>
-            <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Total</Text>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>₹ {item.refid.charges}</Text>
-                {item.status == "requested" &&
-                    <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#3788D8' }}>{item.status}</Text>
-                }
-                {item.status == "confirmed" &&
-                    <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#9C27B0' }}>{item.status}</Text>
-                }
-                {item.status == "checkout" &&
-                    <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#4CAF50' }}>{item.status}</Text>
-                }
-                {item.status == "cancel" &&
-                    <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#F44336' }}>{item.status}</Text>
-                }
-                {item.status == "noshow" &&
-                    <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#FF9800' }}>{item.status}</Text>
-                }
-            </View>
-        </View>
-    </View>
-);
-
-const FirstRoute = () => (
-    <FlatList
-        data={appModel.bookdata}
-        renderItem={renderFirstRoute}
-        keyExtractor={item => `${item._id}`}
-    />
-);
-
-const renderSecondRoute = ({ item }) => (
-    item.status == "requested" &&
-    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <View style={styles.Allview}>
-            <View style={{ marginTop: hp('1%'), marginLeft: hp('1%') }}>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{moment(item.appointmentdate).format('LL') + ' ' + item.timeslot.starttime}</Text>
-            </View>
-            <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{item.property.quentity} Quantity</Text>
-            </View>
-            <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Total</Text>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>₹ {item.refid.charges}</Text>
-                {item.status == "requested" &&
-                    <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#3788D8' }}>{item.status}</Text>
-                }
-            </View>
-        </View>
-    </View>
-);
-
-const SecondRoute = () => (
-    <FlatList
-        data={appModel.bookdata}
-        renderItem={renderSecondRoute}
-        keyExtractor={item => `${item._id}`}
-    />
-);
-
-const renderThiredRoute = ({ item }) => (
-    item.status == "checkout" &&
-    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <View style={styles.Allview}>
-            <View style={{ marginTop: hp('1%'), marginLeft: hp('1%') }}>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{moment(item.appointmentdate).format('LL') + ' ' + item.timeslot.starttime}</Text>
-            </View>
-            <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{item.property.quentity} Quantity</Text>
-            </View>
-            <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Total</Text>
-                <Text style={{ fontSize: hp('2%'), color: '#193628' }}>₹ {item.refid.charges}</Text>
-                {item.status == "checkout" &&
-                    <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#9C27B0' }}>{item.status}</Text>
-                }
-            </View>
-        </View>
-    </View>
-);
-
-const ThiredRoute = () => (
-    <FlatList
-        data={appModel.bookdata}
-        renderItem={renderThiredRoute}
-        keyExtractor={item => `${item._id}`}
-    />
-);
 
 export default class App extends React.Component {
     constructor(props) {
@@ -116,50 +16,26 @@ export default class App extends React.Component {
             BookHistoryService: [],
             refreshing: false,
             loader: true,
-            index: 0,
-            routes: [
-                { key: 'first', title: 'ALL' },
-                { key: 'second', title: 'In Process' },
-                { key: 'thired', title: 'Complated' },
-            ],
+            status: 'ALL',
+            listTab: [
+                {
+                    _id: '1',
+                    status: 'ALL'
+                },
+                {
+                    _id: '2',
+                    status: 'In Process'
+                },
+                {
+                    _id: '3',
+                    status: 'Complated'
+                }
+            ]
         };
+        this.setstateFilter = this.setstateFilter.bind(this);
+        this.renderItem = this.renderItem.bind(this);
+        this.onRefresh = this.onRefresh.bind(this);
     }
-
-    _handleIndexChange = index => this.setState({ index });
-    _renderTabBar = props => {
-        const inputRange = props.navigationState.routes.map((x, i) => i);
-        return (
-            <View style={styles.tabBar}>
-                {props.navigationState.routes.map((route, i) => {
-                    const color = Animated.color(
-                        Animated.round(
-                            Animated.interpolate(props.position, {
-                                inputRange,
-                                outputRange: inputRange.map(inputIndex =>
-                                    inputIndex === i ? 255 : 0
-                                ),
-                            })
-                        ),
-                        0,
-                        0
-                    );
-                    return (
-                        <TouchableOpacity
-                            style={styles.tabItem}
-                            onPress={() => this.setState({ index: i })}>
-                            <Animated.Text style={{ color }}>{route.title}</Animated.Text>
-                        </TouchableOpacity>
-                    );
-                })}
-            </View>
-        );
-    };
-
-    _renderScene = SceneMap({
-        first: FirstRoute,
-        second: SecondRoute,
-        thired: ThiredRoute,
-    });
 
     getdata = async () => {
         var getUser = await AsyncStorage.getItem('@authuserlaundry')
@@ -180,10 +56,10 @@ export default class App extends React.Component {
         });
     }
 
-    onRefresh = () => {
+    onRefresh = async () => {
         const { _id } = this.state;
         this.setState({ refreshing: true });
-        this.BookHistoryService(_id);
+        await this.BookHistoryService(_id);
         this.wait(3000).then(() => this.setState({ refreshing: false }));
     }
 
@@ -191,10 +67,9 @@ export default class App extends React.Component {
         this.getdata()
     }
 
-    BookHistoryService(id) {
-        BookHistoryService(id).then(data => {
+    async BookHistoryService(id) {
+        await BookHistoryService(id).then(data => {
             this.setState({ BookHistoryService: data })
-            appModel.bookdata = data
             this.wait(1000).then(() => this.setState({ loader: false }));
         })
     }
@@ -209,9 +84,88 @@ export default class App extends React.Component {
         )
     }
 
+    setstateFilter = status => {
+        this.setState({ status: status })
+    }
+
+    renderFirstRoute = ({ item }) => (
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <View style={styles.Allview}>
+                <View style={{ marginTop: hp('1%'), marginLeft: hp('1%') }}>
+                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{moment(item.appointmentdate).format('LL') + ' ' + item.timeslot.starttime}</Text>
+                </View>
+                <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
+                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{item.property.quentity} Quantity</Text>
+                </View>
+                <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
+                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Total</Text>
+                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>₹ {item.refid.charges}</Text>
+                    {item.status == "requested" &&
+                        <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#3788D8' }}>{item.status}</Text>
+                    }
+                    {item.status == "confirmed" &&
+                        <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#9C27B0' }}>{item.status}</Text>
+                    }
+                    {item.status == "checkout" &&
+                        <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#4CAF50' }}>{item.status}</Text>
+                    }
+                    {item.status == "cancel" &&
+                        <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#F44336' }}>{item.status}</Text>
+                    }
+                    {item.status == "noshow" &&
+                        <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#FF9800' }}>{item.status}</Text>
+                    }
+                </View>
+            </View>
+        </View>
+    );
+
+    renderSecondRoute = ({ item }) => (
+        item.status == "requested" &&
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <View style={styles.Allview}>
+                <View style={{ marginTop: hp('1%'), marginLeft: hp('1%') }}>
+                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{moment(item.appointmentdate).format('LL') + ' ' + item.timeslot.starttime}</Text>
+                </View>
+                <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
+                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{item.property.quentity} Quantity</Text>
+                </View>
+                <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
+                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Total</Text>
+                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>₹ {item.refid.charges}</Text>
+                    {item.status == "requested" &&
+                        <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#3788D8' }}>{item.status}</Text>
+                    }
+                </View>
+            </View>
+        </View>
+    );
+
+    renderThiredRoute = ({ item }) => (
+        item.status == "checkout" &&
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <View style={styles.Allview}>
+                <View style={{ marginTop: hp('1%'), marginLeft: hp('1%') }}>
+                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{moment(item.appointmentdate).format('LL') + ' ' + item.timeslot.starttime}</Text>
+                </View>
+                <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
+                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{item.property.quentity} Quantity</Text>
+                </View>
+                <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
+                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Total</Text>
+                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>₹ {item.refid.charges}</Text>
+                    {item.status == "checkout" &&
+                        <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#9C27B0' }}>{item.status}</Text>
+                    }
+                </View>
+            </View>
+        </View>
+    );
+
     render() {
-        const { refreshing, loader, BookHistoryService } = this.state;
+        const { refreshing, loader, BookHistoryService, status } = this.state;
         this.wait(3000).then(() => this.setState({ refreshing: false }));
+
         return (
             <SafeAreaView style={styles.container}>
                 {(BookHistoryService == null) || (BookHistoryService && BookHistoryService.length == 0)
@@ -227,12 +181,42 @@ export default class App extends React.Component {
                         <ScrollView refreshControl={<RefreshControl refreshing={refreshing} tintColor="green"
                             title="Pull to refresh" tintColor="#00C464" titleColor="#00C464" colors={["#00C464"]} onRefresh={this.onRefresh} />}
                             showsVerticalScrollIndicator={false}>
-                            <TabView
-                                navigationState={this.state}
-                                renderScene={this._renderScene}
-                                renderTabBar={this._renderTabBar}
-                                onIndexChange={this._handleIndexChange}
-                            />
+                            <View style={styles.listTab}>
+                                {
+                                    this.state.listTab.map(e => (
+                                        <TouchableOpacity
+                                            style={[styles.btnTab, status == e.status && styles.btnTabActive]} onPress={() => this.setstateFilter(e.status)}
+                                        >
+                                            <Text style={styles.textTab, status == e.status ? styles.textTabActive : styles.textTabInActive}>{e.status}</Text>
+                                        </TouchableOpacity>
+                                    ))
+                                }
+
+                            </View>
+
+                            {status == 'ALL' &&
+                                <FlatList
+                                    data={this.state.BookHistoryService}
+                                    renderItem={this.renderFirstRoute}
+                                    keyExtractor={item => `${item._id}`}
+                                />
+                            }
+
+                            {status == 'In Process' &&
+                                <FlatList
+                                    data={this.state.BookHistoryService}
+                                    renderItem={this.renderSecondRoute}
+                                    keyExtractor={item => `${item._id}`}
+                                />
+                            }
+
+                            {status == 'Complated' &&
+                                <FlatList
+                                    data={this.state.BookHistoryService}
+                                    renderItem={this.renderThiredRoute}
+                                    keyExtractor={item => `${item._id}`}
+                                />
+                            }
                         </ScrollView>
                         <View style={{ marginBottom: 60 }}></View>
                     </>
@@ -246,15 +230,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#FFFFFF",
-    },
-    tabBar: {
-        flexDirection: 'row',
-        paddingTop: 10,
-    },
-    tabItem: {
-        flex: 1,
-        alignItems: 'center',
-        padding: 16,
     },
     Allview: {
         flexDirection: 'column',
@@ -270,4 +245,33 @@ const styles = StyleSheet.create({
         elevation: 2,
         margin: hp('1%'),
     },
+    listTab: {
+        flexDirection: 'row',
+        alignSelf: 'center',
+        marginBottom: 20
+    },
+    btnTab: {
+        width: Dimensions.get('window').width / 3.3,
+        flexDirection: 'row',
+        borderColor: '#00C464',
+        borderWidth: 1,
+        padding: 10,
+        justifyContent: 'center'
+    },
+    textTab: {
+        fontSize: 16
+    },
+    btnTabActive: {
+        backgroundColor: '#00C464'
+    },
+    textTabActive: {
+        color: '#FFF'
+    },
+    textTabInActive: {
+        color: '#00C464'
+    },
+    itemContainer: {
+        flexDirection: 'row',
+        paddingVertical: 15
+    }
 })

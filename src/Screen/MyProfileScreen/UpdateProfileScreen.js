@@ -4,6 +4,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { UpdateUserService } from '../../Services/UserService/UserService';
 import Loader from '../../Components/Loader/Loader';
 import Loading from '../../Components/Loader/Loading';
+import AsyncStorage from '@react-native-community/async-storage'
 
 class UpdateProfile extends Component {
     constructor(props) {
@@ -72,7 +73,12 @@ class UpdateProfile extends Component {
         return this.setState({ address: address, addressError: null })
     }
 
-    onPressSubmit = async () => {
+    authenticateUser = (user) => {
+        AsyncStorage.setItem('@authuserlaundry', JSON.stringify(user));
+    }
+
+
+    onPressSubmit = () => {
         const { fullname, username, mobilenumber, _id, memberName, address } = this.state;
         if (!fullname || !username || !mobilenumber) {
             this.setFullName(fullname)
@@ -97,11 +103,13 @@ class UpdateProfile extends Component {
         this.setState({ loading: true })
 
         try {
-            console.log('body', body)
-            await UpdateUserService(body).then(response => {
+            UpdateUserService(body).then(response => {
+
                 if (response != null) {
+                    console.log('response', response)
+                    this.authenticateUser(response)
                     ToastAndroid.show("Your Profile Update!", ToastAndroid.LONG);
-                    this.props.navigation.navigate('MyProfileScreen')
+                    this.props.navigation.replace('MyProfileScreen')
                 }
             })
         }

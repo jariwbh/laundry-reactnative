@@ -11,6 +11,7 @@ import Geolocation from 'react-native-geolocation-service';
 import Geocoder from 'react-native-geocoding';
 import AsyncStorage from '@react-native-community/async-storage'
 import { UpdateUserService } from '../../Services/UserService/UserService';
+import Loader from '../../Components/Loader/LoaderMap'
 var { width, height } = Dimensions.get('window')
 
 export default class MapScreen extends React.Component {
@@ -33,7 +34,8 @@ export default class MapScreen extends React.Component {
             latitude: 0,
             longitude: 0,
             userDetails: null,
-            _id: null
+            _id: null,
+            loading: false
         };
 
         this._unsubscribeSiFocus = this.props.navigation.addListener('focus', e => {
@@ -47,6 +49,7 @@ export default class MapScreen extends React.Component {
     }
 
     pickLocationHandler = event => {
+        console.log('event', event)
         const coords = event.nativeEvent.coordinate;
         this.map.animateToRegion({
             ...this.state.focusedLocation,
@@ -67,17 +70,18 @@ export default class MapScreen extends React.Component {
 
     getLocationHandler = () => {
         Geolocation.getCurrentPosition((position) => {
+            let latitude = position.coords.latitude
+            let longitude = position.coords.longitude
+
             const coordsEvent = {
                 nativeEvent: {
                     coordinate: {
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude
+                        latitude: latitude,
+                        longitude: longitude
                     }
                 }
             };
 
-            var latitude = position.coords.latitude
-            var longitude = position.coords.longitude
             Geocoder.init("AIzaSyAEgSROnoWhlvU0hEox7NKpXM9wRXXEfKo");
             Geocoder.from([latitude, longitude])
                 .then(json => {
@@ -85,9 +89,9 @@ export default class MapScreen extends React.Component {
                     var longAddress = Array.prototype.map.call(addressComponent, Loc => Loc.long_name).toString();
                     this.locationdata = longAddress
                     this.setState({ Address: longAddress })
+                    this.pickLocationHandler(coordsEvent);
                 })
                 .catch(error => console.warn(error));
-            this.pickLocationHandler(coordsEvent);
         },
             err => {
                 console.log(err);
@@ -95,8 +99,30 @@ export default class MapScreen extends React.Component {
             })
     }
 
-    componentDidMount() {
-        this.getdata();
+    getLocationFirstTime() {
+        let latitude;
+        let longitude;
+        let coordsEvent = {
+            nativeEvent: {
+                coordinate: {
+                    latitude: latitude,
+                    longitude: longitude
+                }
+            }
+        };
+
+        Geocoder.init("AIzaSyAEgSROnoWhlvU0hEox7NKpXM9wRXXEfKo");
+        Geocoder.from(`${this.locationdata}`)
+            .then(json => {
+                var location = json.results[0].geometry.location;
+                coordsEvent.nativeEvent.coordinate.latitude = location.lat;
+                coordsEvent.nativeEvent.coordinate.longitude = location.lng;
+                this.pickLocationHandler(coordsEvent);
+            })
+            .catch(error => console.warn(error));
+    }
+
+    checkPermisssion() {
         setTimeout(
             () =>
                 MyPermissionController.checkAndRequestStoragePermission()
@@ -106,16 +132,22 @@ export default class MapScreen extends React.Component {
         );
     }
 
+    componentDidMount() {
+        this.getdata();
+        this.checkPermisssion();
+        this.getLocationFirstTime();
+    }
+
     authenticateUser = (user) => {
-        AsyncStorage.setItem('@authuserlaundry', null);
         AsyncStorage.setItem('@authuserlaundry', JSON.stringify(user));
     }
 
     onPressSubmit() {
-        const { userDetails, Address } = this.state;
+        const { userDetails, Address, loading } = this.state;
         if (!this.locationdata || !this.state.Address) {
             return alert("Fetching the Position failed, Please Select Location!");
         }
+        this.setState({ loading: true })
         userDetails.property.address = Address
         try {
             UpdateUserService(userDetails).then(response => {
@@ -198,7 +230,7 @@ export default class MapScreen extends React.Component {
                     </MapView>
                     <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('3%') }}>
                         <TouchableOpacity style={this.state.Address == null ? styles.locationbtnError : styles.locationbtn} onPress={() => this.onPressSubmit()} disabled={this.state.Address == null ? true : false}>
-                            <Text style={styles.locationText}>Done</Text>
+                            {this.state.loading == true ? <Loader /> : <Text style={styles.locationText}>Done</Text>}
                         </TouchableOpacity>
                     </View>
 

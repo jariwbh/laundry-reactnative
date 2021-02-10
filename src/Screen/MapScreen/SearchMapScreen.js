@@ -9,16 +9,23 @@ class SearchMapScreen extends Component {
     constructor(props) {
         super(props);
         this.setlocation = null
+        this.state = {
+            location: null
+        }
     }
 
     async onPressToMapScreen(location) {
         this.setlocation = location
+        this.setState({ location: location })
     }
 
     async onPressSubmit() {
-        var location = this.setlocation
-        console.log('location', location)
-        await this.props.navigation.replace('MapScreen', { location })
+        if (this.state.location == null && this.state.location == undefined) {
+            alert('Search Location.')
+        } else {
+            var location = this.setlocation
+            await this.props.navigation.replace('MapScreen', { location })
+        }
     }
 
     render() {
@@ -37,14 +44,18 @@ class SearchMapScreen extends Component {
                             }}
                             textInputProps={{
                                 InputComp: Input,
-                                errorStyle: { color: 'red' },
+                                errorStyle: { color: 'red' }
                             }}
                         />
-                        <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('2%') }}>
-                            <TouchableOpacity style={styles.update_Btn} onPress={() => this.onPressSubmit()}>
-                                <Text style={styles.update_text} >GO</Text>
+
+                    </View>
+                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('3%') }}>
+                            <TouchableOpacity style={this.state.location == null ? styles.update_BtnError : styles.update_Btn} onPress={() => this.onPressSubmit()} disabled={this.state.location == null ? true : false}>
+                                <Text style={styles.update_text}>GO</Text>
                             </TouchableOpacity>
                         </View>
+
                     </View>
                 </View>
             </SafeAreaView>
@@ -57,7 +68,6 @@ export default SearchMapScreen;
 const styles = StyleSheet.create({
     container: {
         marginTop: 20,
-        flex: 1,
     },
     statusbar: {
         flexDirection: 'row',
@@ -79,22 +89,29 @@ const styles = StyleSheet.create({
     },
     statInput: {
         fontSize: hp('2.5%'),
-        flex: 1,
         padding: hp('2%'),
         alignItems: "center",
     },
     update_Btn: {
         flexDirection: 'row',
-        width: wp('15%'),
-        backgroundColor: "#e6fff3",
+        width: wp('50%'),
+        backgroundColor: "#00C464",
         borderRadius: wp('2%'),
         height: hp('7%'),
         alignItems: "center",
         justifyContent: "center",
-        marginBottom: hp('20%')
+    },
+    update_BtnError: {
+        flexDirection: 'row',
+        width: wp('50%'),
+        backgroundColor: "#b3ffda",
+        borderRadius: wp('2%'),
+        height: hp('7%'),
+        alignItems: "center",
+        justifyContent: "center",
     },
     update_text: {
-        color: '#00C464',
+        color: '#FFFFFF',
         fontSize: hp('2.5%'),
     },
 })
