@@ -88,7 +88,7 @@ function HomeStackScreen({ navigation }) {
                 component={HomeScreen} />
             <HomeStack.Screen name="ServiceDetailsScreen"
                 options={{
-                    title: 'Our Services',
+                    title: '',
                     headerShown: false
                 }}
                 component={ServiceDetailsScreen} />

@@ -104,14 +104,14 @@ export default class MyProfileScreen extends Component {
                         <View>
                             <View style={{ marginTop: hp('2%'), flexDirection: 'row', justifyContent: 'space-between', marginLeft: hp('3%'), marginRight: hp('3%') }}>
                                 <Text style={{ fontSize: hp('2%') }}>Phone Number</Text>
-                                <Text style={{ fontSize: hp('2%') }}>{userMobile}</Text>
+                                <Text style={{ fontSize: hp('2%'), marginRight: hp('3%') }}>{userMobile}</Text>
                             </View>
                             <View style={{ alignItems: 'center', marginTop: hp('2%'), flexDirection: 'row' }}>
                                 <View style={{ flex: 1, height: 1, backgroundColor: '#e6e6e6' }} />
                             </View>
                             <View style={{ marginTop: hp('2%'), flexDirection: 'row', justifyContent: 'space-between', marginLeft: hp('3%'), marginRight: hp('3%') }}>
                                 <Text style={{ fontSize: hp('2%') }}>Address</Text>
-                                <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', marginLeft: hp('20%'), marginRight: hp('4%') }}>{userAddress}</Text>
+                                <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', marginLeft: hp('20%'), marginRight: hp('3%') }}>{userAddress}</Text>
                             </View>
                             <View style={{ alignItems: 'center', marginTop: hp('2%'), flexDirection: 'row' }}>
                                 <View style={{ flex: 1, height: 1, backgroundColor: '#e6e6e6' }} />

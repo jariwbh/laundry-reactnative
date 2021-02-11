@@ -20,7 +20,6 @@ class PermissionController {
                                     PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
                                     PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
                                     PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-                                    PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION
                                 ])
                                     .then((results) => {
                                         // console.log(results);

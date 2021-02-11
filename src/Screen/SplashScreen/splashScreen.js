@@ -16,10 +16,10 @@ function SplashScreen(props) {
       var userData;
       userData = JSON.parse(getUser)
       if (userData != null) {
-        if (userData.property.address == null && userData.property.address == undefined) {
-          return props.navigation.navigate('MapScreen')
-        } else {
+        if (userData && userData.property && userData.property.address) {
           return props.navigation.navigate('TabNavigation')
+        } else {
+          return props.navigation.navigate('MapScreen')
         }
       } else {
         props.navigation.navigate('LoginScreen')
@@ -57,13 +57,13 @@ function SplashScreen(props) {
           alignSelf: 'center',
           alignItems: 'center',
           justifyContent: 'flex-start',
-          height: 350,
+          height: 200,
         }}>
         <Animated.Image
           resizeMode="center"
           style={{
-            width: 300,
-            height: 200,
+            width: 100,
+            height: 50,
           }}
           source={require('../../assets/Image/Logo.png')}
         />

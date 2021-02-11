@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, TextInput, SafeAreaView, ToastAndroid, ScrollView, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, TextInput, SafeAreaView, ToastAndroid, ScrollView, StatusBar, BackHandler } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import AsyncStorage from '@react-native-community/async-storage';
 import Loader from '../../Components/Loader/Loading'
@@ -20,6 +20,15 @@ export default class RegisterScreen extends Component {
         this.setPassword = this.setPassword.bind(this);
         this.onPressSubmit = this.onPressSubmit.bind(this);
         this.secondTextInputRef = React.createRef();
+
+        this._unsubscribeSiFocus = this.props.navigation.addListener('focus', e => {
+            BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+        });
+
+        this._unsubscribeSiBlur = this.props.navigation.addListener('blur', e => {
+            BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton,
+            );
+        });
     }
 
     setEmail(email) {
@@ -72,18 +81,16 @@ export default class RegisterScreen extends Component {
                         return
                     }
 
-                    if (response != null || response != 'undefind') {
-                        if (response.user.property != null || response.user.property.address) {
-                            this.authenticateUser(response.user)
-                            ToastAndroid.show("SignIn Success!", ToastAndroid.LONG);
-                            //this.resetScreen();
-                            return this.props.navigation.navigate('MapScreen')
-                        } else {
+                    if (response) {
+                        if (response.user && response.user.property && response.user.property.address) {
                             this.authenticateUser(response.user)
                             //---------------- appConfig.headers["authkey"] = response.user.addedby; -------------------
                             ToastAndroid.show("SignIn Success!", ToastAndroid.LONG);
                             this.props.navigation.navigate('TabNavigation')
-                            //this.resetScreen()
+                        } else {
+                            this.authenticateUser(response.user)
+                            ToastAndroid.show("SignIn Success!", ToastAndroid.LONG);
+                            return this.props.navigation.navigate('MapScreen')
                         }
                     }
                 })
@@ -92,6 +99,17 @@ export default class RegisterScreen extends Component {
             this.setState({ loading: false })
             ToastAndroid.show("Username and Password Invalid!", ToastAndroid.LONG)
         };
+    }
+
+    componentWillUnmount() {
+        this._unsubscribeSiFocus();
+        this._unsubscribeSiBlur();
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+    }
+
+    handleBackButton = () => {
+        BackHandler.exitApp()
+        return true;
     }
 
     render() {

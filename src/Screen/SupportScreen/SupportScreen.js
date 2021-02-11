@@ -29,7 +29,7 @@ const SupportScreen = () => {
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('-3%') }}>
                 <View style={styles.inputView}>
-                    <MaterialIcons name="call" size={30} color='#000000' style={{ marginLeft: hp('2%') }} />
+                    <MaterialIcons name="email" size={30} color='#000000' style={{ marginLeft: hp('2%') }} />
                     <View style={{ flexDirection: 'column' }}>
                         <Text style={{ fontSize: hp('3%') }}> Email us on</Text>
                         <Text style={{ fontSize: hp('2.5%') }}> contact@membroz.com</Text>

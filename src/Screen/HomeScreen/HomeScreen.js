@@ -61,8 +61,8 @@ export default class HomeScreen extends Component {
     renderServiceList = ({ item }) => (
         <View style={styles.listview}>
             <TouchableOpacity onPress={() => this.props.navigation.navigate('ServiceDetailsScreen', { item })}>
-                <Image source={{ uri: item.gallery[0].attachment }} style={{
-                    marginTop: hp('0%'), width: wp('93%'), height: hp('30%'), borderRadius: hp('2%')
+                <Image source={{ uri: item.gallery[0].attachment }} resizeMode='stretch' style={{
+                    width: wp('93%'), height: hp('30%'), borderRadius: hp('0.5%')
                 }}
                 />
                 <View style={{ marginTop: hp('1%'), marginLeft: hp('1%') }}>
