@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity, Dimensions } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+var { width, height } = Dimensions.get('window')
 
 export default class ViewProfileScreen extends Component {
     constructor(props) {
@@ -31,7 +32,7 @@ export default class ViewProfileScreen extends Component {
                         <Text style={{ fontSize: hp('2.5%'), color: '#737373' }} >{userMobile} </Text>
                     </View>
                     {userAddress &&
-                        <View style={{ justifyContent: 'center', alignItems: 'center', marginLeft: hp('10%'), marginRight: hp('10%') }}>
+                        <View style={{ justifyContent: 'center', alignItems: 'center', marginLeft: width - 300 }}>
                             <Text style={{ fontSize: hp('2%'), color: '#737373', textTransform: 'capitalize' }} >{userAddress} </Text>
                         </View>
                     }
