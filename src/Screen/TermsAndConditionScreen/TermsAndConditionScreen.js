@@ -1,4 +1,3 @@
-
 import React from 'react'
 import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'

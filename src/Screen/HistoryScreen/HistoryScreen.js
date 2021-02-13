@@ -5,7 +5,6 @@ import moment from 'moment'
 import { BookHistoryService } from '../../Services/BookHistoryService/BookHistoryService';
 import AsyncStorage from '@react-native-community/async-storage'
 import Loading from '../../Components/Loader/Loader'
-import { appModel } from '../../Helpers/appModel';
 
 export default class App extends React.Component {
     constructor(props) {

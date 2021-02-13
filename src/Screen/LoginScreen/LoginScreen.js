@@ -34,7 +34,7 @@ export default class RegisterScreen extends Component {
     setEmail(email) {
         const re = /\S+@\S+\.\S+/;
         if (!email || email.length <= 0) {
-            return this.setState({ usererror: 'Email Id can not be empty', username: null });
+            return this.setState({ usererror: 'Email Id can not be empty' });
         }
         return this.setState({ username: email, usererror: null })
     }
@@ -214,16 +214,21 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     TextInput: {
-        fontSize: hp('2%'),
+        fontSize: hp('2.5%'),
         flex: 1,
         padding: hp('2%'),
         backgroundColor: '#F4F4F4'
     },
     TextInputError: {
-        fontSize: hp('2%'),
+        fontSize: hp('2.5%'),
         flex: 1,
         padding: hp('2%'),
-        backgroundColor: '#ffcccc'
+        backgroundColor: "#F4F4F4",
+        borderColor: '#FF0000',
+        width: wp('85%'),
+        height: hp('8%'),
+        alignItems: "center",
+        borderWidth: hp('0.2%')
     },
     loginBtn: {
         flexDirection: 'row',

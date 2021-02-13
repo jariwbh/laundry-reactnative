@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, TextInput, ToastAndroid, ScrollView } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import Entypo from 'react-native-vector-icons/Entypo';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Loader from '../../Components/Loader/Loading';
 import moment from 'moment';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -284,10 +282,15 @@ const styles = StyleSheet.create({
     },
     TextInputError: {
         fontSize: hp('2.5%'),
+        color: '#737373',
         flex: 1,
         padding: hp('2%'),
-        color: '#737373',
-        backgroundColor: '#FFCCCC'
+        backgroundColor: "#F4F4F4",
+        borderColor: '#FF0000',
+        width: wp('90%'),
+        height: hp('9%'),
+        alignItems: "center",
+        borderWidth: hp('0.2%')
     },
     confBtn: {
         flexDirection: 'row',

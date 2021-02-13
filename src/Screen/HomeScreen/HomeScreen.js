@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, SafeAreaView, BackHandler, RefreshControl, FlatList, StatusBar } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import Entypo from 'react-native-vector-icons/Entypo';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Loader from '../../Components/Loader/Loader'
 import { CategoryService } from '../../Services/CategoryService/CategoryService';
 import HTML from 'react-native-render-html'

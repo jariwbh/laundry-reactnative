@@ -259,7 +259,12 @@ const styles = StyleSheet.create({
         fontSize: hp('2.5%'),
         flex: 1,
         padding: hp('2%'),
-        backgroundColor: '#ffcccc'
+        backgroundColor: "#F4F4F4",
+        borderColor: '#FF0000',
+        width: wp('80%'),
+        height: hp('8%'),
+        alignItems: "center",
+        borderWidth: hp('0.2%')
     },
     update_Btn: {
         flexDirection: 'row',

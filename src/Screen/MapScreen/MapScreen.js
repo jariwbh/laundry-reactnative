@@ -1,7 +1,7 @@
 import React from "react";
 import {
-    View, TouchableOpacity, Button, StyleSheet, Text, Dimensions,
-    Image, FlatList, TextInput, SafeAreaView, StatusBar, BackHandler, ToastAndroid
+    View, TouchableOpacity, StyleSheet, Text, Dimensions,
+    TextInput, SafeAreaView, StatusBar, BackHandler, ToastAndroid
 } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp, } from 'react-native-responsive-screen'
 import Ionicons from 'react-native-vector-icons/Ionicons';

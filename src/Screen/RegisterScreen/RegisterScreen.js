@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, TextI
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { RegisterService } from '../../Services/RegisterService/RegisterService';
 import Loader from '../../Components/Loader/Loading';
-//import BackButton from '../../Components/BackButton/BackButton'
 
 export default class RegisterScreen extends Component {
     constructor(props) {
@@ -192,7 +191,6 @@ const styles = StyleSheet.create({
     inputView: {
         flexDirection: 'row',
         backgroundColor: "#F4F4F4",
-        //borderRadius: wp('2%'),
         shadowOpacity: 0.5,
         shadowRadius: 3,
         shadowOffset: {
@@ -207,16 +205,21 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     TextInput: {
-        fontSize: hp('2%'),
+        fontSize: hp('2.5%'),
         flex: 1,
         padding: hp('2%'),
         backgroundColor: '#F4F4F4'
     },
     TextInputError: {
-        fontSize: hp('2%'),
+        fontSize: hp('2.5%'),
         flex: 1,
         padding: hp('2%'),
-        backgroundColor: '#ffcccc'
+        backgroundColor: "#F4F4F4",
+        borderColor: '#FF0000',
+        width: wp('85%'),
+        height: hp('7%'),
+        alignItems: "center",
+        borderWidth: hp('0.2%')
     },
     signupBtn: {
         flexDirection: 'row',
