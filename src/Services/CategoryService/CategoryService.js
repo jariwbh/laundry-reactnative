@@ -3,13 +3,14 @@ import appConfig from '../../Helpers/appConfig'
 const CategoryService = () => {
     const body =
     {
-        "search": [{
-            "searchfield": "category",
-            "searchvalue": "6014ed9fd7ebfa6ec230aab5",
-            "criteria": "eq",
-            "datatype": "ObjectId"
-        },
-        { "searchfield": "status", "searchvalue": "active", "criteria": "eq" }]
+        "search": [
+            //     {
+            //     "searchfield": "category",
+            //     "searchvalue": "6014ed9fd7ebfa6ec230aab5",
+            //     "criteria": "eq",
+            //     "datatype": "ObjectId"
+            // },
+            { "searchfield": "status", "searchvalue": "active", "criteria": "eq" }]
     }
 
     const requestOptions = {

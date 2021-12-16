@@ -22,7 +22,8 @@ const SupportScreen = () => {
                         <Text style={{ fontSize: hp('3%') }}> Call us on</Text>
                         <Text style={{ fontSize: hp('2.5%') }} > +91-77788-22666</Text>
                     </View>
-                    <TouchableOpacity onPress={() => { Linking.openURL('tel:+91-77788-22666') }} style={{ width: wp('25%'), height: hp('7%'), marginRight: hp('2%'), backgroundColor: '#00C464', borderRadius: hp('3%'), alignItems: 'center', justifyContent: 'center' }}>
+                    <TouchableOpacity onPress={() => { Linking.openURL('tel:+91-77788-22666') }}
+                        style={{ width: wp('25%'), height: hp('7%'), marginRight: hp('2%'), backgroundColor: '#00C464', borderRadius: hp('3%'), alignItems: 'center', justifyContent: 'center' }}>
                         <Text style={{ textAlign: 'center', fontSize: hp('3%') }}>Call now</Text>
                     </TouchableOpacity>
                 </View>
@@ -34,7 +35,8 @@ const SupportScreen = () => {
                         <Text style={{ fontSize: hp('3%') }}> Email us on</Text>
                         <Text style={{ fontSize: hp('2.5%') }}> contact@membroz.com</Text>
                     </View>
-                    <TouchableOpacity onPress={() => Linking.openURL('mailto:contact@membroz.com')} style={{ width: wp('25%'), height: hp('7%'), marginRight: hp('2%'), backgroundColor: '#00C464', borderRadius: hp('3%'), alignItems: 'center', justifyContent: 'center' }}>
+                    <TouchableOpacity onPress={() => Linking.openURL('mailto:contact@membroz.com')}
+                        style={{ width: wp('25%'), height: hp('7%'), marginRight: hp('2%'), backgroundColor: '#00C464', borderRadius: hp('3%'), alignItems: 'center', justifyContent: 'center' }}>
                         <Text style={{ textAlign: 'center', fontSize: hp('3%') }}>Email</Text>
                     </TouchableOpacity>
                 </View>

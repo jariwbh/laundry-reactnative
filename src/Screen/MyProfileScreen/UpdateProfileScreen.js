@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     inputView: {
         flexDirection: 'row',
         backgroundColor: "#fff",
-        borderRadius: wp('8%'),
+        borderRadius: wp('0%'),
         shadowOpacity: 0.5,
         shadowRadius: 3,
         shadowOffset: {
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     },
     update_Btn: {
         flexDirection: 'row',
-        width: wp('30%'),
+        width: wp('50%'),
         backgroundColor: "#e6fff3",
         borderRadius: wp('2%'),
         height: hp('5%'),

@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Loader from '../../Components/Loader/Loading'
 import appConfig from '../../Helpers/appConfig'
 import { LoginService } from "../../Services/LoginService/LoginService"
+import { Keyboard } from 'react-native';
 
 export default class RegisterScreen extends Component {
     constructor(props) {
@@ -72,6 +73,7 @@ export default class RegisterScreen extends Component {
             password: password
         }
         this.setState({ loading: true })
+        Keyboard.dismiss();
         try {
             await LoginService(body)
                 .then(response => {
@@ -82,16 +84,17 @@ export default class RegisterScreen extends Component {
                     }
 
                     if (response) {
-                        if (response.user && response.user.property && response.user.property.address) {
-                            this.authenticateUser(response.user)
-                            //---------------- appConfig.headers["authkey"] = response.user.addedby; -------------------
-                            ToastAndroid.show("SignIn Success!", ToastAndroid.LONG);
-                            this.props.navigation.navigate('TabNavigation')
-                        } else {
-                            this.authenticateUser(response.user)
-                            ToastAndroid.show("SignIn Success!", ToastAndroid.LONG);
-                            return this.props.navigation.navigate('MapScreen')
-                        }
+                        // if (response.user && response.user.property && response.user.property.address) {
+                        this.authenticateUser(response.user)
+                        //---------------- appConfig.headers["authkey"] = response.user.addedby; -------------------
+                        ToastAndroid.show("SignIn Success!", ToastAndroid.LONG);
+                        this.props.navigation.navigate('TabNavigation')
+                        // } 
+                        // else {
+                        //     this.authenticateUser(response.user)
+                        //     ToastAndroid.show("SignIn Success!", ToastAndroid.LONG);
+                        //     return this.props.navigation.navigate('MapScreen')
+                        // }
                     }
                 })
         }

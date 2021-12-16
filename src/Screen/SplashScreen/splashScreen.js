@@ -16,11 +16,11 @@ function SplashScreen(props) {
       var userData;
       userData = JSON.parse(getUser)
       if (userData != null) {
-        if (userData && userData.property && userData.property.address) {
-          return props.navigation.navigate('TabNavigation')
-        } else {
-          return props.navigation.navigate('MapScreen')
-        }
+        // if (userData && userData.property && userData.property.address) {
+        return props.navigation.navigate('TabNavigation')
+        // } else {
+        //   return props.navigation.navigate('MapScreen')
+        // }
       } else {
         props.navigation.navigate('LoginScreen')
       }

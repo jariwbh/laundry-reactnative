@@ -6,6 +6,7 @@ import moment from 'moment';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AsyncStorage from '@react-native-community/async-storage';
 import { BookService } from '../../Services/BookService/BookService';
+import { Keyboard } from 'react-native';
 
 export default class BookScreen extends Component {
     constructor(props) {
@@ -120,13 +121,13 @@ export default class BookScreen extends Component {
         }
 
         const body = {
-            attendee: memberID,
             appointmentdate: serviceDate,
+            attendee: memberID,
             onModel: "Member",
             refid: this.serviceDetails._id,
-            host: userID,
+            //host: userID,
             charges: this.serviceDetails.charges,
-            duration: this.serviceDetails.duration,
+            duration: '0', //this.serviceDetails.duration,
             timeslot: {
                 starttime: serviceTime
             },
@@ -134,11 +135,11 @@ export default class BookScreen extends Component {
                 quentity: userQuentity
             }
         }
-
+        console.log(`body`, body);
         this.setState({ loading: true });
-
         try {
             BookService(body).then(response => {
+                console.log(`response`, response);
                 if (response != null) {
                     this.setState({ loading: false });
                     ToastAndroid.show("Booking Sucess!", ToastAndroid.LONG);
@@ -171,7 +172,8 @@ export default class BookScreen extends Component {
                                 placeholderTextColor="#737373"
                                 type='clear'
                                 returnKeyType="next"
-                                onTouchStart={this.showDatePicker}
+                                onTouchEnd={() => Keyboard.dismiss()}
+                                onFocus={this.showDatePicker}
                                 onChangeText={(serviceDate) => this.setServiceDate(serviceDate)}
                             />
                             <DateTimePickerModal
@@ -192,7 +194,8 @@ export default class BookScreen extends Component {
                                 type='clear'
                                 placeholderTextColor="#737373"
                                 returnKeyType="next"
-                                onTouchStart={this.showTimePicker}
+                                onTouchEnd={() => Keyboard.dismiss()}
+                                onFocus={this.showTimePicker}
                                 onChangeText={(serviceTime) => this.setServiceTime(serviceTime)}
                             />
                             <DateTimePickerModal

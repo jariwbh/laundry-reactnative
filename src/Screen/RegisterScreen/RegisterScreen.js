@@ -71,7 +71,6 @@ export default class RegisterScreen extends Component {
         }
         this.setState({ loading: true })
         try {
-            console.log('body', body)
             await RegisterService(body).then(response => {
                 if (response.error) {
                     this.setState({ loading: false })

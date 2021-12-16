@@ -43,7 +43,7 @@ export default class MyProfileScreen extends Component {
                 userProfile: userData.profilepic,
                 userName: userData.property.fullname,
                 userAddress: userData.property.address,
-                userMobile: userData.property.mobile_number
+                userMobile: userData.property.mobile
             }));
         }
     }

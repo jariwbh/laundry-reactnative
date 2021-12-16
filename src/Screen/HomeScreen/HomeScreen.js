@@ -59,16 +59,20 @@ export default class HomeScreen extends Component {
     renderServiceList = ({ item }) => (
         <View style={styles.listview}>
             <TouchableOpacity onPress={() => this.props.navigation.navigate('ServiceDetailsScreen', { item })}>
-                <Image source={{ uri: item.gallery[0].attachment }} resizeMode='stretch' style={{
+                <Image source={{ uri: item.gallery[0] && item.gallery[0].attachment }} resizeMode='stretch' style={{
                     width: wp('93%'), height: hp('30%'), borderRadius: hp('0.5%')
                 }}
                 />
                 <View style={{ marginTop: hp('1%'), marginLeft: hp('1%') }}>
                     <Text style={{ fontSize: hp('3%'), fontWeight: '600', textTransform: 'capitalize' }}>{item.title}</Text>
                 </View>
-                <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), marginRight: hp('1%') }}>
-                    <HTML baseFontStyle={{ fontSize: hp('2%'), textTransform: 'capitalize' }} html={`<html> ${item.description.length < 100 ? `${item.description}` : `${item.description.substring(0, 100)}...`} </html>`} />
-                </View>
+                {
+                    item.description &&
+                    <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), marginRight: hp('1%') }}>
+                        <HTML baseFontStyle={{ fontSize: hp('2%'), textTransform: 'capitalize' }} html={`<html> ${item.description.length < 100 ? `${item.description}` : `${item.description.substring(0, 100)}...`} </html>`} />
+                    </View>
+                }
+
             </TouchableOpacity>
         </View>
     )

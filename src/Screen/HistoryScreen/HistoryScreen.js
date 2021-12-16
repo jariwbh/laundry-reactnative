@@ -94,11 +94,11 @@ export default class App extends React.Component {
                     <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{moment(item.appointmentdate).format('LL') + ' ' + item.timeslot.starttime}</Text>
                 </View>
                 <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
-                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{item.property.quentity} Quantity</Text>
+                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{item.property && item.property.quentity ? item.property.quentity : '0'} Quantity</Text>
                 </View>
                 <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
                     <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Total</Text>
-                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>₹ {item.refid.charges}</Text>
+                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>₹ {item.refid && item.refid.charges ? item.refid.charges : '0'}</Text>
                     {item.status == "requested" &&
                         <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#3788D8' }}>{item.status}</Text>
                     }
@@ -127,11 +127,11 @@ export default class App extends React.Component {
                     <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{moment(item.appointmentdate).format('LL') + ' ' + item.timeslot.starttime}</Text>
                 </View>
                 <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
-                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{item.property.quentity} Quantity</Text>
+                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{item.property && item.property.quentity ? item.property.quentity : '0'} Quantity</Text>
                 </View>
                 <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
                     <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Total</Text>
-                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>₹ {item.refid.charges}</Text>
+                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>₹ {item.refid && item.refid.charges ? item.refid.charges : '0'}</Text>
                     {item.status == "requested" &&
                         <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#3788D8' }}>{item.status}</Text>
                     }
@@ -148,11 +148,11 @@ export default class App extends React.Component {
                     <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{moment(item.appointmentdate).format('LL') + ' ' + item.timeslot.starttime}</Text>
                 </View>
                 <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
-                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{item.property.quentity} Quantity</Text>
+                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>{item.property && item.property.quentity ? item.property.quentity : '0'} Quantity</Text>
                 </View>
                 <View style={{ marginTop: hp('1%'), marginLeft: hp('1%'), flexDirection: 'row', justifyContent: 'space-between', marginRight: hp('1%') }}>
                     <Text style={{ fontSize: hp('2%'), color: '#193628' }}>Total</Text>
-                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>₹ {item.refid.charges}</Text>
+                    <Text style={{ fontSize: hp('2%'), color: '#193628' }}>₹ {item.refid && item.refid.charges ? item.refid.charges : '0'}</Text>
                     {item.status == "checkout" &&
                         <Text style={{ fontSize: hp('2%'), textTransform: 'capitalize', color: '#9C27B0' }}>{item.status}</Text>
                     }
