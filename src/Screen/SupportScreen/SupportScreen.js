@@ -18,27 +18,27 @@ const SupportScreen = () => {
             <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('2%') }}>
                 <View style={styles.inputView}>
                     <MaterialIcons name="call" size={30} color='#000000' style={{ marginLeft: hp('2%') }} />
-                    <View style={{ flexDirection: 'column' }}>
-                        <Text style={{ fontSize: hp('3%') }}> Call us on</Text>
-                        <Text style={{ fontSize: hp('2.5%') }} > +91-77788-22666</Text>
+                    <View style={{ flexDirection: 'column', marginLeft: '10%' }}>
+                        <Text style={{ fontSize: hp('2.2%') }}> Call us on</Text>
+                        <Text style={{ fontSize: hp('2%') }} > +91-77788-22666</Text>
                     </View>
-                    <TouchableOpacity onPress={() => { Linking.openURL('tel:+91-77788-22666') }}
+                    {/* <TouchableOpacity onPress={() => { Linking.openURL('tel:+91-77788-22666') }}
                         style={{ width: wp('25%'), height: hp('7%'), marginRight: hp('2%'), backgroundColor: '#00C464', borderRadius: hp('3%'), alignItems: 'center', justifyContent: 'center' }}>
                         <Text style={{ textAlign: 'center', fontSize: hp('3%') }}>Call now</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('-3%') }}>
                 <View style={styles.inputView}>
                     <MaterialIcons name="email" size={30} color='#000000' style={{ marginLeft: hp('2%') }} />
-                    <View style={{ flexDirection: 'column' }}>
-                        <Text style={{ fontSize: hp('3%') }}> Email us on</Text>
-                        <Text style={{ fontSize: hp('2.5%') }}> contact@membroz.com</Text>
+                    <View style={{ flexDirection: 'column', marginLeft: '10%' }}>
+                        <Text style={{ fontSize: hp('2.5%') }}> Email us on</Text>
+                        <Text style={{ fontSize: hp('2%') }}> contact@membroz.com</Text>
                     </View>
-                    <TouchableOpacity onPress={() => Linking.openURL('mailto:contact@membroz.com')}
+                    {/* <TouchableOpacity onPress={() => Linking.openURL('mailto:contact@membroz.com')}
                         style={{ width: wp('25%'), height: hp('7%'), marginRight: hp('2%'), backgroundColor: '#00C464', borderRadius: hp('3%'), alignItems: 'center', justifyContent: 'center' }}>
                         <Text style={{ textAlign: 'center', fontSize: hp('3%') }}>Email</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             </View>
         </SafeAreaView>
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         height: hp('13%'),
         margin: hp('3%'),
         alignItems: "center",
-        justifyContent: 'space-between'
+        justifyContent: 'flex-start'
     },
 
 })
